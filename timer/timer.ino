@@ -64,9 +64,13 @@ void loop() {
 }
 
 
-void displayNumber(int toDisplay) {
+void displayTime(int toDisplay) {
 
   long beginTime = millis();
+
+  int minutes = toDisplay / 60;
+  int seconds = toDisplay % 60;
+  int digitToDisplay = 0;
 
   for(int digit = 4 ; digit > 0 ; digit--) {
 
@@ -74,21 +78,24 @@ void displayNumber(int toDisplay) {
     switch(digit) {
       case 1:
         digitalWrite(digit1, DIGIT_ON);
+        digitToDisplay = minutes / 10 % 10;
         break;
       case 2:
         digitalWrite(digit2, DIGIT_ON);
+        digitToDisplay = minutes % 10;
         break;
       case 3:
         digitalWrite(digit3, DIGIT_ON);
+        digitToDisplay = seconds / 10;
         break;
       case 4:
         digitalWrite(digit4, DIGIT_ON);
+        digitToDisplay = seconds % 10;
         break;
     }
 
     //Turn on the right segments for this digit
-    lightNumber(toDisplay % 10);
-    toDisplay /= 10;
+    lightNumber(digitToDisplay);
 
     delayMicroseconds(DISPLAY_BRIGHTNESS);
     //Display digit for fraction of a second (1us to 5000us, 500 is pretty good)
