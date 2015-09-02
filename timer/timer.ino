@@ -60,7 +60,7 @@ void setup() {
 }
 
 void loop() {
-  displayNumber(millis()/1000);
+  displayTime(millis()/1000);
 }
 
 
