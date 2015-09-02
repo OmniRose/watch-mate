@@ -7,6 +7,8 @@
 #include "Arduino.h"
 
 
+#define PIN_BUTTON_LADDER A5
+
 
 #define PIN_DISPLAY_DIGIT_1  11       // Display pin 1
 #define PIN_DISPLAY_DIGIT_2  10       // Display pin 2
