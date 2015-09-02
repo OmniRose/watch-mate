@@ -1,20 +1,6 @@
 
 #include "constants.h"
 
-int digit1 = 11; //PWM Display pin 1
-int digit2 = 10; //PWM Display pin 2
-int digit3 = 9; //PWM Display pin 6
-int digit4 = 6; //PWM Display pin 8
-
-int segA = A1; //Display pin 14
-int segB = 3; //Display pin 16
-int segC = 4; //Display pin 13
-int segD = 5; //Display pin 3
-int segE = A0; //Display pin 5
-int segF = 7; //Display pin 11
-int segG = 8; //Display pin 15
-int segColon = 12; // Display pin 12
-
 #define DIGIT_ON  HIGH
 #define DIGIT_OFF  LOW
 
@@ -22,21 +8,21 @@ int segColon = 12; // Display pin 12
 #define SEGMENT_OFF HIGH
 
 void setup() {
-  pinMode(segA, OUTPUT);
-  pinMode(segB, OUTPUT);
-  pinMode(segC, OUTPUT);
-  pinMode(segD, OUTPUT);
-  pinMode(segE, OUTPUT);
-  pinMode(segF, OUTPUT);
-  pinMode(segG, OUTPUT);
-  pinMode(segColon, OUTPUT);
+  pinMode(PIN_DISPLAY_SEGMENT_A, OUTPUT);
+  pinMode(PIN_DISPLAY_SEGMENT_B, OUTPUT);
+  pinMode(PIN_DISPLAY_SEGMENT_C, OUTPUT);
+  pinMode(PIN_DISPLAY_SEGMENT_D, OUTPUT);
+  pinMode(PIN_DISPLAY_SEGMENT_E, OUTPUT);
+  pinMode(PIN_DISPLAY_SEGMENT_F, OUTPUT);
+  pinMode(PIN_DISPLAY_SEGMENT_G, OUTPUT);
+  pinMode(PIN_DISPLAY_SEGMENT_COLON, OUTPUT);
 
-  pinMode(digit1, OUTPUT);
-  pinMode(digit2, OUTPUT);
-  pinMode(digit3, OUTPUT);
-  pinMode(digit4, OUTPUT);
+  pinMode(PIN_DISPLAY_DIGIT_1, OUTPUT);
+  pinMode(PIN_DISPLAY_DIGIT_2, OUTPUT);
+  pinMode(PIN_DISPLAY_DIGIT_3, OUTPUT);
+  pinMode(PIN_DISPLAY_DIGIT_4, OUTPUT);
 
-  digitalWrite(segColon, SEGMENT_ON);
+  digitalWrite(PIN_DISPLAY_SEGMENT_COLON, SEGMENT_ON);
 
   pinMode(13, OUTPUT);
 }
@@ -59,44 +45,44 @@ void displayTime(int toDisplay) {
     //Turn on a digit for a short amount of time
     switch(digit) {
       case 1:
-        digitalWrite(digit1, DIGIT_ON);
+        digitalWrite(PIN_DISPLAY_DIGIT_1, DIGIT_ON);
         digitToDisplay = minutes / 10 % 10;
         break;
       case 2:
-        digitalWrite(digit2, DIGIT_ON);
+        digitalWrite(PIN_DISPLAY_DIGIT_2, DIGIT_ON);
         digitToDisplay = minutes % 10;
         break;
       case 3:
-        digitalWrite(digit3, DIGIT_ON);
+        digitalWrite(PIN_DISPLAY_DIGIT_3, DIGIT_ON);
         digitToDisplay = seconds / 10;
         break;
       case 4:
-        digitalWrite(digit4, DIGIT_ON);
+        digitalWrite(PIN_DISPLAY_DIGIT_4, DIGIT_ON);
         digitToDisplay = seconds % 10;
         break;
     }
 
-    //Turn on the right segments for this digit
+    //Turn on the right PIN_DISPLAY_SEGMENT_ments for this digit
     lightNumber(digitToDisplay);
 
     delayMicroseconds(DISPLAY_BRIGHTNESS);
     //Display digit for fraction of a second (1us to 5000us, 500 is pretty good)
 
-    //Turn off all segments
+    //Turn off all PIN_DISPLAY_SEGMENT_ments
     lightNumber(10);
 
     //Turn off all digits
-    digitalWrite(digit1, DIGIT_OFF);
-    digitalWrite(digit2, DIGIT_OFF);
-    digitalWrite(digit3, DIGIT_OFF);
-    digitalWrite(digit4, DIGIT_OFF);
+    digitalWrite(PIN_DISPLAY_DIGIT_1, DIGIT_OFF);
+    digitalWrite(PIN_DISPLAY_DIGIT_2, DIGIT_OFF);
+    digitalWrite(PIN_DISPLAY_DIGIT_3, DIGIT_OFF);
+    digitalWrite(PIN_DISPLAY_DIGIT_4, DIGIT_OFF);
   }
 
   while( (millis() - beginTime) < DISPLAY_LOOP_TIME) ;
   //Wait for 20ms to pass before we paint the display again
 }
 
-//Given a number, turns on those segments
+//Given a number, turns on those PIN_DISPLAY_SEGMENT_ments
 //If number == 10, then turn off number
 void lightNumber(int numberToDisplay) {
 
@@ -104,113 +90,113 @@ void lightNumber(int numberToDisplay) {
   switch (numberToDisplay){
 
   case 0:
-    digitalWrite(segA, SEGMENT_ON);
-    digitalWrite(segB, SEGMENT_ON);
-    digitalWrite(segC, SEGMENT_ON);
-    digitalWrite(segD, SEGMENT_ON);
-    digitalWrite(segE, SEGMENT_ON);
-    digitalWrite(segF, SEGMENT_ON);
-    digitalWrite(segG, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_OFF);
     break;
 
   case 1:
-    digitalWrite(segA, SEGMENT_OFF);
-    digitalWrite(segB, SEGMENT_ON);
-    digitalWrite(segC, SEGMENT_ON);
-    digitalWrite(segD, SEGMENT_OFF);
-    digitalWrite(segE, SEGMENT_OFF);
-    digitalWrite(segF, SEGMENT_OFF);
-    digitalWrite(segG, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_OFF);
     break;
 
   case 2:
-    digitalWrite(segA, SEGMENT_ON);
-    digitalWrite(segB, SEGMENT_ON);
-    digitalWrite(segC, SEGMENT_OFF);
-    digitalWrite(segD, SEGMENT_ON);
-    digitalWrite(segE, SEGMENT_ON);
-    digitalWrite(segF, SEGMENT_OFF);
-    digitalWrite(segG, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
   case 3:
-    digitalWrite(segA, SEGMENT_ON);
-    digitalWrite(segB, SEGMENT_ON);
-    digitalWrite(segC, SEGMENT_ON);
-    digitalWrite(segD, SEGMENT_ON);
-    digitalWrite(segE, SEGMENT_OFF);
-    digitalWrite(segF, SEGMENT_OFF);
-    digitalWrite(segG, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
   case 4:
-    digitalWrite(segA, SEGMENT_OFF);
-    digitalWrite(segB, SEGMENT_ON);
-    digitalWrite(segC, SEGMENT_ON);
-    digitalWrite(segD, SEGMENT_OFF);
-    digitalWrite(segE, SEGMENT_OFF);
-    digitalWrite(segF, SEGMENT_ON);
-    digitalWrite(segG, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
   case 5:
-    digitalWrite(segA, SEGMENT_ON);
-    digitalWrite(segB, SEGMENT_OFF);
-    digitalWrite(segC, SEGMENT_ON);
-    digitalWrite(segD, SEGMENT_ON);
-    digitalWrite(segE, SEGMENT_OFF);
-    digitalWrite(segF, SEGMENT_ON);
-    digitalWrite(segG, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
   case 6:
-    digitalWrite(segA, SEGMENT_ON);
-    digitalWrite(segB, SEGMENT_OFF);
-    digitalWrite(segC, SEGMENT_ON);
-    digitalWrite(segD, SEGMENT_ON);
-    digitalWrite(segE, SEGMENT_ON);
-    digitalWrite(segF, SEGMENT_ON);
-    digitalWrite(segG, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
   case 7:
-    digitalWrite(segA, SEGMENT_ON);
-    digitalWrite(segB, SEGMENT_ON);
-    digitalWrite(segC, SEGMENT_ON);
-    digitalWrite(segD, SEGMENT_OFF);
-    digitalWrite(segE, SEGMENT_OFF);
-    digitalWrite(segF, SEGMENT_OFF);
-    digitalWrite(segG, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_OFF);
     break;
 
   case 8:
-    digitalWrite(segA, SEGMENT_ON);
-    digitalWrite(segB, SEGMENT_ON);
-    digitalWrite(segC, SEGMENT_ON);
-    digitalWrite(segD, SEGMENT_ON);
-    digitalWrite(segE, SEGMENT_ON);
-    digitalWrite(segF, SEGMENT_ON);
-    digitalWrite(segG, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
   case 9:
-    digitalWrite(segA, SEGMENT_ON);
-    digitalWrite(segB, SEGMENT_ON);
-    digitalWrite(segC, SEGMENT_ON);
-    digitalWrite(segD, SEGMENT_ON);
-    digitalWrite(segE, SEGMENT_OFF);
-    digitalWrite(segF, SEGMENT_ON);
-    digitalWrite(segG, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
   case 10:
-    digitalWrite(segA, SEGMENT_OFF);
-    digitalWrite(segB, SEGMENT_OFF);
-    digitalWrite(segC, SEGMENT_OFF);
-    digitalWrite(segD, SEGMENT_OFF);
-    digitalWrite(segE, SEGMENT_OFF);
-    digitalWrite(segF, SEGMENT_OFF);
-    digitalWrite(segG, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_OFF);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_OFF);
     break;
   }
 }
