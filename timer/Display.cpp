@@ -176,6 +176,10 @@ void Display::_turn_segments_on(char charToDisplay) {
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
+  case 'i':
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
+    break;
+
   case 'E':
   case 'e':
     digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
@@ -192,12 +196,36 @@ void Display::_turn_segments_on(char charToDisplay) {
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
+  case 'l':
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
+    break;
+
+  case 'o':
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
+    break;
+
+  case 'R':
+  case 'r':
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
+    break;
+
   case 'Y':
     digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
+    break;
+
+  case 'v':
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
     break;
 
   default:
