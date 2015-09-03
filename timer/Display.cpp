@@ -56,13 +56,13 @@ void Display::displayTime(int toDisplay) {
     }
 
     //Turn on the right segments for this digit
-    _lightNumber(digitToDisplay);
+    _turn_segments_on(digitToDisplay);
 
     delayMicroseconds(DISPLAY_BRIGHTNESS);
     //Display digit for fraction of a second (1us to 5000us, 500 is pretty good)
 
     //Turn off all segments
-    _lightNumber(10);
+    _turn_all_segments_off();
 
     //Turn off all digits
     digitalWrite(PIN_DISPLAY_DIGIT_1, DIGIT_OFF);
@@ -75,12 +75,20 @@ void Display::displayTime(int toDisplay) {
   //Wait for 20ms to pass before we paint the display again
 }
 
+void Display::_turn_all_segments_off () {
+  digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_OFF);
+  digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_OFF);
+  digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_OFF);
+  digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_OFF);
+  digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
+  digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_OFF);
+  digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_OFF);
+}
+
 // Given a number, turns on those segments
-// If number == 10, then turn off number
-void Display::_lightNumber(int numberToDisplay) {
+void Display::_turn_segments_on(int numberToDisplay) {
 
-
-  switch (numberToDisplay){
+  switch (numberToDisplay) {
 
   case 0:
     digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
@@ -89,26 +97,18 @@ void Display::_lightNumber(int numberToDisplay) {
     digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_OFF);
     break;
 
   case 1:
-    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_OFF);
     digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_OFF);
     break;
 
   case 2:
     digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_OFF);
     digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_OFF);
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
@@ -117,34 +117,26 @@ void Display::_lightNumber(int numberToDisplay) {
     digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_OFF);
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
   case 4:
-    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_OFF);
     digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
     digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
   case 5:
     digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_OFF);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
     digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
   case 6:
     digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_OFF);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
@@ -156,10 +148,6 @@ void Display::_lightNumber(int numberToDisplay) {
     digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_OFF);
     break;
 
   case 8:
@@ -177,19 +165,8 @@ void Display::_lightNumber(int numberToDisplay) {
     digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
     digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
-    break;
-
-  case 10:
-    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_OFF);
-    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_OFF);
     break;
   }
 }
