@@ -1,20 +1,28 @@
 
 #include "Constants.h"
 #include "Display.h"
-# include "Buttons.h"
+#include "Buttons.h"
 
 Display display;
 Buttons buttons;
 
+unsigned long start_time = 0;
+
 void setup() {
   Serial.begin(9600);
   pinMode(13, OUTPUT);
-  pinMode(PIN_BUTTON_LADDER, INPUT);
+  start_time = millis();
 }
 
 void loop() {
 
-  display.displayTime(millis()/1000);
-  buttons.report();
+  unsigned long current_time = millis() - start_time;
+  display.displayTime( current_time / 1000 );
+
+  int button = buttons.get_button_press();
+  if ( button == BUTTON_4 ) {
+    // reset the start time
+    start_time = millis();
+  }
 
 }

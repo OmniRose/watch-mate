@@ -1,42 +1,45 @@
 #include "Arduino.h"
 #include "Buttons.h"
 
-
-// use these to identify the button pressed in the code
-#define NO_BUTTON 0
-#define BUTTON_1  1
-#define BUTTON_2  2
-#define BUTTON_3  3
-#define BUTTON_4  4
-
-// min and max values reod from the analogue input that match up to the button
-// being pressed.
-#define BUTTON_1_MAX_VALUE 1023
-#define BUTTON_1_MIN_VALUE 1020
-#define BUTTON_2_MAX_VALUE 1010
-#define BUTTON_2_MIN_VALUE 990
-#define BUTTON_3_MAX_VALUE 515
-#define BUTTON_3_MIN_VALUE 505
-#define BUTTON_4_MAX_VALUE 10
-#define BUTTON_4_MIN_VALUE 5
-
-
-
-
-
 Buttons::Buttons() {
+
+  pinMode(PIN_BUTTON_LADDER, INPUT);
+
+  // initialize values to sensible defaults
+  _record_button_press(NO_BUTTON);
 }
 
-void Buttons::report() {
-  int key = _get_current_button();
-  Serial.print("current key: ");
-  Serial.println(key);
+
+void Buttons::_record_button_press(int button) {
+  _last_button_pressed = button;
+  _time_button_pressed = millis();
+}
+
+
+int Buttons::get_button_press() {
+  int button = _get_current_button();
+
+  if (button != _last_button_pressed) {
+    _record_button_press(button);
+
+    Serial.print("current button: ");
+    Serial.print(button);
+    Serial.print(" ");
+    Serial.println(_time_button_pressed);
+
+    return button;
+  }
+
+  // If a button change was not detected then return that no button is being
+  // pressed.
+  return NO_BUTTON;
+
 }
 
 int Buttons::_get_current_button() {
   int button_pin_value = analogRead(PIN_BUTTON_LADDER);
 
-  // Serial.print("key value: ");
+  // Serial.print("button_pin_value value: ");
   // Serial.println(button_pin_value);
 
   if (button_pin_value >= BUTTON_1_MIN_VALUE && button_pin_value <= BUTTON_1_MAX_VALUE) {
