@@ -28,17 +28,20 @@ int Buttons::get_button_press() {
     return button;
   }
 
-  // Some buttons behave specially if they are held down.
-  if (button == _last_button_pressed) {
-
-    // repeat the button press
-    if ( button == BUTTON_PLUS || button == BUTTON_MINUS ) {
-      if ( millis() - BUTTON_PLUS_MINUS_REPEAT_DELAY > _time_button_pressed) {
-        _record_button_press(button);
-        return button;
-      }
+  // Check for holding down the plus or minus buttons
+  if ( button == BUTTON_PLUS || button == BUTTON_MINUS ) {
+    if ( millis() - BUTTON_PLUS_MINUS_REPEAT_DELAY > _time_button_pressed) {
+      _record_button_press(button);
+      return button;
     }
+  }
 
+  // Check for holding down the mode button
+  if (
+    button == BUTTON_MODE
+    && millis() - BUTTON_MODE_HOLD_DOWN_DELAY > _time_button_pressed
+  ) {
+    return BUTTON_MODE_HELD_DOWN;
   }
 
   // If a button change was not detected then return that no button is being

@@ -5,15 +5,20 @@
 #include "Constants.h"
 
 // use these to identify the button pressed in the code
-#define NO_BUTTON       0
-#define BUTTON_MODE     1
-#define BUTTON_PLUS     2
-#define BUTTON_MINUS    3
-#define BUTTON_RESTART  4
+#define NO_BUTTON             0
+#define BUTTON_MODE           1
+#define BUTTON_PLUS           2
+#define BUTTON_MINUS          3
+#define BUTTON_RESTART        4
+#define BUTTON_MODE_HELD_DOWN 5
 
 // Time in milliseconds after which holding donw the plus or minus button
 // results in a new press being registered.
 #define BUTTON_PLUS_MINUS_REPEAT_DELAY 300
+
+// Time in ms after which holding down the mode button results in the
+// BUTTON_MODE_HELD_DOWN value being returned.
+#define BUTTON_MODE_HOLD_DOWN_DELAY 2000
 
 // min and max values reod from the analogue input that match up to the button
 // being pressed.
