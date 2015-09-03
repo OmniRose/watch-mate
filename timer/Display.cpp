@@ -22,7 +22,7 @@ Display::Display() {
   pinMode(PIN_DISPLAY_DIGIT_3, OUTPUT);
   pinMode(PIN_DISPLAY_DIGIT_4, OUTPUT);
 
-  digitalWrite(PIN_DISPLAY_SEGMENT_COLON, SEGMENT_ON);
+  digitalWrite(PIN_DISPLAY_SEGMENT_COLON, SEGMENT_OFF);
 }
 
 void Display::display_text(char* text) {
@@ -44,6 +44,7 @@ void Display::display_time(int toDisplay) {
   char numbers_as_letters[] = "0123456789";
 
   _pause_if_required();
+  _display_digit(PIN_DISPLAY_DIGIT_1, ':');
   _display_digit(PIN_DISPLAY_DIGIT_1, numbers_as_letters[minutes / 10 % 10]);
   _display_digit(PIN_DISPLAY_DIGIT_2, numbers_as_letters[minutes % 10     ]);
   _display_digit(PIN_DISPLAY_DIGIT_3, numbers_as_letters[seconds / 10     ]);
@@ -72,6 +73,7 @@ void Display::_turn_all_segments_off () {
   digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_OFF);
   digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_OFF);
   digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_OFF);
+  digitalWrite(PIN_DISPLAY_SEGMENT_COLON, SEGMENT_OFF);
 }
 
 // Given a number, turns on those segments
@@ -226,6 +228,10 @@ void Display::_turn_segments_on(char charToDisplay) {
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
+    break;
+
+  case ':': // Only works when PIN_DISPLAY_DIGIT_1 in active...
+    digitalWrite(PIN_DISPLAY_SEGMENT_COLON, SEGMENT_ON);
     break;
 
   default:
