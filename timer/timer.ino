@@ -11,6 +11,10 @@ unsigned long countdown_duration;
 
 void setup() {
   Serial.begin(9600);
+  Serial.println("Starting up!");
+
+  buttons.setup();
+
   pinMode(13, OUTPUT);
   countdown_ends = 0;
   countdown_duration = 900000; // 15 mins in ms

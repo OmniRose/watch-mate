@@ -35,6 +35,7 @@ class Buttons
 {
   public:
     Buttons();
+    void setup();
     int get_button_press();
   private:
     void _record_button_press(int);

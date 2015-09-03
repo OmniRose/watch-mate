@@ -1,14 +1,15 @@
 #include "Arduino.h"
 #include "Buttons.h"
 
-Buttons::Buttons() {
+Buttons::Buttons() {}
 
+
+void Buttons::setup () {
   pinMode(PIN_BUTTON_LADDER, INPUT);
 
   // initialize values to sensible defaults
   _record_button_press(NO_BUTTON);
 }
-
 
 void Buttons::_record_button_press(int button) {
   _last_button_pressed = button;
