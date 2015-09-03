@@ -9,8 +9,8 @@ class Buttons
   public:
     Buttons();
     void report();
-    // void displayTime(int);
   private:
+    int _get_current_button();
 };
 
 #endif

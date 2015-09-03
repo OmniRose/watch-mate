@@ -2,31 +2,56 @@
 #include "Buttons.h"
 
 
+// use these to identify the button pressed in the code
+#define NO_BUTTON 0
+#define BUTTON_1  1
+#define BUTTON_2  2
+#define BUTTON_3  3
+#define BUTTON_4  4
+
+// min and max values reod from the analogue input that match up to the button
+// being pressed.
+#define BUTTON_1_MAX_VALUE 1023
+#define BUTTON_1_MIN_VALUE 1020
+#define BUTTON_2_MAX_VALUE 1010
+#define BUTTON_2_MIN_VALUE 990
+#define BUTTON_3_MAX_VALUE 515
+#define BUTTON_3_MIN_VALUE 505
+#define BUTTON_4_MAX_VALUE 10
+#define BUTTON_4_MIN_VALUE 5
+
+
+
+
+
 Buttons::Buttons() {
 }
 
 void Buttons::report() {
-  int keyVal = analogRead(PIN_BUTTON_LADDER);
+  int key = _get_current_button();
+  Serial.print("current key: ");
+  Serial.println(key);
+}
 
-  // play the note corresponding to each value on A0
-  if (keyVal >= 1020) {
-    Serial.print("key 1: ");
-    Serial.println(keyVal);
+int Buttons::_get_current_button() {
+  int button_pin_value = analogRead(PIN_BUTTON_LADDER);
+
+  // Serial.print("key value: ");
+  // Serial.println(button_pin_value);
+
+  if (button_pin_value >= BUTTON_1_MIN_VALUE && button_pin_value <= BUTTON_1_MAX_VALUE) {
+    return BUTTON_1;
   }
-  else if (keyVal >= 990 && keyVal <= 1010) {
-    Serial.print("key 2: ");
-    Serial.println(keyVal);
+  else if (button_pin_value >= BUTTON_2_MIN_VALUE && button_pin_value <= BUTTON_2_MAX_VALUE) {
+    return BUTTON_2;
   }
-  else if (keyVal >= 505 && keyVal <= 515) {
-    Serial.print("key 3: ");
-    Serial.println(keyVal);
+  else if (button_pin_value >= BUTTON_3_MIN_VALUE && button_pin_value <= BUTTON_3_MAX_VALUE) {
+    return BUTTON_3;
   }
-  else if (keyVal >= 5 && keyVal <= 10) {
-    Serial.print("key 4: ");
-    Serial.println(keyVal);
+  else if (button_pin_value >= BUTTON_4_MIN_VALUE && button_pin_value <= BUTTON_4_MAX_VALUE) {
+    return BUTTON_4;
   }
   else {
-    Serial.print("no key: ");
-    Serial.println(keyVal);
+    return NO_BUTTON;
   }
 }
