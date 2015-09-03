@@ -25,7 +25,7 @@ void loop() {
 
   long time_remaining = countdown_ends - millis();
 
-  display.displayTime( time_remaining / 1000 );
+  display.display_time( time_remaining / 1000 );
 
   int button = buttons.get_button_press();
 
@@ -49,14 +49,15 @@ void enter_shutdown_state () {
   while ( buttons.get_button_press() == BUTTON_MODE_HELD_DOWN ) {
     long remaining = off_at - millis();
     if (remaining > 0) {
-      display.displayTime( remaining / 1000 );
+      char off[] = "OFF ";
+      off[3] = int(remaining / 1000) + 48; // to ascii code
+      display.display_text( off );
 
     } else {
       // enter infinite loop displaying 'off'. Power down will be handled by
       // external circuitry
       shutdown();
     }
-
   }
 
 }
@@ -64,6 +65,6 @@ void enter_shutdown_state () {
 void shutdown () {
   Serial.println("OFF!");
   while (true) {
-    delay(1000);
+    display.display_text("BYE");
   }
 }

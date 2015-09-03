@@ -25,58 +25,43 @@ Display::Display() {
   digitalWrite(PIN_DISPLAY_SEGMENT_COLON, SEGMENT_ON);
 }
 
-void Display::displayTime(int toDisplay) {
+void Display::display_text(char* text) {
+  // Serial.println(text);
 
   _pause_if_required();
 
+  _display_digit(PIN_DISPLAY_DIGIT_1, text[0]);
+  _display_digit(PIN_DISPLAY_DIGIT_2, text[1]);
+  _display_digit(PIN_DISPLAY_DIGIT_3, text[2]);
+  _display_digit(PIN_DISPLAY_DIGIT_4, text[3]);
+}
+
+void Display::display_time(int toDisplay) {
+
+
   int minutes = toDisplay / 60;
   int seconds = toDisplay % 60;
-  int digitToDisplay = 0;
+  char numbers_as_letters[] = "0123456789";
 
-  for(int digit = 4 ; digit > 0 ; digit--) {
-
-    //Turn on a digit for a short amount of time
-    switch(digit) {
-      case 1:
-        digitalWrite(PIN_DISPLAY_DIGIT_1, DIGIT_ON);
-        digitToDisplay = minutes / 10 % 10;
-        break;
-      case 2:
-        digitalWrite(PIN_DISPLAY_DIGIT_2, DIGIT_ON);
-        digitToDisplay = minutes % 10;
-        break;
-      case 3:
-        digitalWrite(PIN_DISPLAY_DIGIT_3, DIGIT_ON);
-        digitToDisplay = seconds / 10;
-        break;
-      case 4:
-        digitalWrite(PIN_DISPLAY_DIGIT_4, DIGIT_ON);
-        digitToDisplay = seconds % 10;
-        break;
-    }
-
-    //Turn on the right segments for this digit
-    _turn_segments_on(digitToDisplay);
-
-    delayMicroseconds(DISPLAY_BRIGHTNESS);
-    //Display digit for fraction of a second (1us to 5000us, 500 is pretty good)
-
-    //Turn off all segments
-    _turn_all_segments_off();
-
-    //Turn off all digits
-    digitalWrite(PIN_DISPLAY_DIGIT_1, DIGIT_OFF);
-    digitalWrite(PIN_DISPLAY_DIGIT_2, DIGIT_OFF);
-    digitalWrite(PIN_DISPLAY_DIGIT_3, DIGIT_OFF);
-    digitalWrite(PIN_DISPLAY_DIGIT_4, DIGIT_OFF);
-  }
-
+  _pause_if_required();
+  _display_digit(PIN_DISPLAY_DIGIT_1, numbers_as_letters[minutes / 10 % 10]);
+  _display_digit(PIN_DISPLAY_DIGIT_2, numbers_as_letters[minutes % 10     ]);
+  _display_digit(PIN_DISPLAY_DIGIT_3, numbers_as_letters[seconds / 10     ]);
+  _display_digit(PIN_DISPLAY_DIGIT_4, numbers_as_letters[seconds % 10     ]);
 }
 
 void Display::_pause_if_required() {
   // Pause if the display has been painted too recently;
   while( (millis() - _display_last_painted) < DISPLAY_LOOP_TIME) ;
   _display_last_painted = millis();
+}
+
+void Display::_display_digit(int digit, char toDisplay) {
+  digitalWrite(digit, DIGIT_ON);
+  _turn_segments_on(toDisplay);
+  delayMicroseconds(DISPLAY_BRIGHTNESS);
+  digitalWrite(digit, DIGIT_OFF);
+  _turn_all_segments_off();
 }
 
 void Display::_turn_all_segments_off () {
@@ -90,11 +75,20 @@ void Display::_turn_all_segments_off () {
 }
 
 // Given a number, turns on those segments
-void Display::_turn_segments_on(int numberToDisplay) {
+void Display::_turn_segments_on(char charToDisplay) {
 
-  switch (numberToDisplay) {
+  // TODO - change all these to use a byte per char and the bits in the byte to
+  // represent the segments in the LED display.
 
-  case 0:
+  switch (charToDisplay) {
+
+  case ' ':
+  case 0: // nul
+    _turn_all_segments_off();
+    break;
+
+  case '0':
+  case 'O':
     digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
@@ -103,12 +97,12 @@ void Display::_turn_segments_on(int numberToDisplay) {
     digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
     break;
 
-  case 1:
+  case '1':
     digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
     break;
 
-  case 2:
+  case '2':
     digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
@@ -116,7 +110,7 @@ void Display::_turn_segments_on(int numberToDisplay) {
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
-  case 3:
+  case '3':
     digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
@@ -124,14 +118,14 @@ void Display::_turn_segments_on(int numberToDisplay) {
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
-  case 4:
+  case '4':
     digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
-  case 5:
+  case '5':
     digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
@@ -139,24 +133,8 @@ void Display::_turn_segments_on(int numberToDisplay) {
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
-  case 6:
+  case '6':
     digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
-    break;
-
-  case 7:
-    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
-    break;
-
-  case 8:
-    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
-    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
@@ -164,7 +142,23 @@ void Display::_turn_segments_on(int numberToDisplay) {
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
 
-  case 9:
+  case '7':
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    break;
+
+  case '8':
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
+    break;
+
+  case '9':
     digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
@@ -172,5 +166,45 @@ void Display::_turn_segments_on(int numberToDisplay) {
     digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
     digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
     break;
+
+  case 'B':
+  case 'b':
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
+    break;
+
+  case 'E':
+  case 'e':
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
+    break;
+
+  case 'F':
+    digitalWrite(PIN_DISPLAY_SEGMENT_A, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_E, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
+    break;
+
+  case 'Y':
+    digitalWrite(PIN_DISPLAY_SEGMENT_B, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_C, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_D, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_F, SEGMENT_ON);
+    digitalWrite(PIN_DISPLAY_SEGMENT_G, SEGMENT_ON);
+    break;
+
+  default:
+    Serial.print("ERROR - can't light up segment for ascii decimal '");
+    Serial.print((int)charToDisplay);
+    Serial.println("'");
+    break;
+
   }
 }
