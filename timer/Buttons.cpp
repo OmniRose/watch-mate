@@ -13,6 +13,10 @@ Buttons::Buttons() {
 void Buttons::_record_button_press(int button) {
   _last_button_pressed = button;
   _time_button_pressed = millis();
+  Serial.print("_record_button_press: ");
+  Serial.print(button);
+  Serial.print(" ");
+  Serial.println(_time_button_pressed);
 }
 
 
@@ -21,13 +25,20 @@ int Buttons::get_button_press() {
 
   if (button != _last_button_pressed) {
     _record_button_press(button);
-
-    Serial.print("current button: ");
-    Serial.print(button);
-    Serial.print(" ");
-    Serial.println(_time_button_pressed);
-
     return button;
+  }
+
+  // Some buttons behave specially if they are held down.
+  if (button == _last_button_pressed) {
+
+    // repeat the button press
+    if ( button == BUTTON_PLUS || button == BUTTON_MINUS ) {
+      if ( millis() - BUTTON_PLUS_MINUS_REPEAT_DELAY > _time_button_pressed) {
+        _record_button_press(button);
+        return button;
+      }
+    }
+
   }
 
   // If a button change was not detected then return that no button is being

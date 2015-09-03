@@ -11,6 +11,10 @@
 #define BUTTON_MINUS    3
 #define BUTTON_RESTART  4
 
+// Time in milliseconds after which holding donw the plus or minus button
+// results in a new press being registered.
+#define BUTTON_PLUS_MINUS_REPEAT_DELAY 300
+
 // min and max values reod from the analogue input that match up to the button
 // being pressed.
 #define BUTTON_MODE_MAX_VALUE     1023
