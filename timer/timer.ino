@@ -20,7 +20,7 @@ void setup() {
 void loop() {
 
   long time_remaining = countdown_ends - millis();
-  Serial.println(countdown_duration);
+
   display.displayTime( time_remaining / 1000 );
 
   int button = buttons.get_button_press();
