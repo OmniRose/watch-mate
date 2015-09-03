@@ -40,7 +40,7 @@ int Buttons::get_button_press() {
   // Check for holding down the mode button
   if (
     button == BUTTON_MODE
-    && millis() - BUTTON_MODE_HOLD_DOWN_DELAY > _time_button_pressed
+    && millis() > BUTTON_MODE_HOLD_DOWN_DELAY + _time_button_pressed
   ) {
     return BUTTON_MODE_HELD_DOWN;
   }
