@@ -6,23 +6,27 @@
 Display display;
 Buttons buttons;
 
-unsigned long start_time = 0;
+unsigned long countdown_ends;
+unsigned long countdown_duration;
 
 void setup() {
   Serial.begin(9600);
   pinMode(13, OUTPUT);
-  start_time = millis();
+  countdown_ends = 0;
+  countdown_duration = 900000; // 15 mins in ms
+  countdown_ends = millis() + countdown_duration;
 }
 
 void loop() {
 
-  unsigned long current_time = millis() - start_time;
-  display.displayTime( current_time / 1000 );
+  long time_remaining = countdown_ends - millis();
+  Serial.println(countdown_duration);
+  display.displayTime( time_remaining / 1000 );
 
   int button = buttons.get_button_press();
   if ( button == BUTTON_RESTART ) {
     // reset the start time
-    start_time = millis();
+    countdown_ends = millis() + countdown_duration + 500;
   }
 
 }
