@@ -20,7 +20,7 @@ void loop() {
   display.displayTime( current_time / 1000 );
 
   int button = buttons.get_button_press();
-  if ( button == BUTTON_4 ) {
+  if ( button == BUTTON_RESTART ) {
     // reset the start time
     start_time = millis();
   }

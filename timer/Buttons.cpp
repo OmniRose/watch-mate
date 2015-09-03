@@ -42,17 +42,17 @@ int Buttons::_get_current_button() {
   // Serial.print("button_pin_value value: ");
   // Serial.println(button_pin_value);
 
-  if (button_pin_value >= BUTTON_1_MIN_VALUE && button_pin_value <= BUTTON_1_MAX_VALUE) {
-    return BUTTON_1;
+  if (button_pin_value >= BUTTON_MODE_MIN_VALUE && button_pin_value <= BUTTON_MODE_MAX_VALUE) {
+    return BUTTON_MODE;
   }
-  else if (button_pin_value >= BUTTON_2_MIN_VALUE && button_pin_value <= BUTTON_2_MAX_VALUE) {
-    return BUTTON_2;
+  else if (button_pin_value >= BUTTON_PLUS_MIN_VALUE && button_pin_value <= BUTTON_PLUS_MAX_VALUE) {
+    return BUTTON_PLUS;
   }
-  else if (button_pin_value >= BUTTON_3_MIN_VALUE && button_pin_value <= BUTTON_3_MAX_VALUE) {
-    return BUTTON_3;
+  else if (button_pin_value >= BUTTON_MINUS_MIN_VALUE && button_pin_value <= BUTTON_MINUS_MAX_VALUE) {
+    return BUTTON_MINUS;
   }
-  else if (button_pin_value >= BUTTON_4_MIN_VALUE && button_pin_value <= BUTTON_4_MAX_VALUE) {
-    return BUTTON_4;
+  else if (button_pin_value >= BUTTON_RESTART_MIN_VALUE && button_pin_value <= BUTTON_RESTART_MAX_VALUE) {
+    return BUTTON_RESTART;
   }
   else {
     return NO_BUTTON;
