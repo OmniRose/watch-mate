@@ -28,9 +28,42 @@ void loop() {
   display.displayTime( time_remaining / 1000 );
 
   int button = buttons.get_button_press();
+
+  if ( button == BUTTON_MODE_HELD_DOWN ) {
+    enter_shutdown_state();
+    return;
+  }
+
   if ( button == BUTTON_RESTART ) {
     // reset the start time
     countdown_ends = millis() + countdown_duration + 500;
   }
 
+}
+
+void enter_shutdown_state () {
+
+  Serial.println("Starting shutdown...");
+  long off_at = millis() + 3999;
+
+  while ( buttons.get_button_press() == BUTTON_MODE_HELD_DOWN ) {
+    long remaining = off_at - millis();
+    if (remaining > 0) {
+      display.displayTime( remaining / 1000 );
+
+    } else {
+      // enter infinite loop displaying 'off'. Power down will be handled by
+      // external circuitry
+      shutdown();
+    }
+
+  }
+
+}
+
+void shutdown () {
+  Serial.println("OFF!");
+  while (true) {
+    delay(1000);
+  }
 }
