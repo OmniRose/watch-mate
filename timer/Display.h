@@ -12,6 +12,8 @@ class Display
   private:
     void _turn_segments_on(int);
     void _turn_all_segments_off();
+    void _pause_if_required();
+    unsigned long _display_last_painted;
 };
 
 #endif

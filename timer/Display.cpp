@@ -27,7 +27,7 @@ Display::Display() {
 
 void Display::displayTime(int toDisplay) {
 
-  long beginTime = millis();
+  _pause_if_required();
 
   int minutes = toDisplay / 60;
   int seconds = toDisplay % 60;
@@ -71,8 +71,12 @@ void Display::displayTime(int toDisplay) {
     digitalWrite(PIN_DISPLAY_DIGIT_4, DIGIT_OFF);
   }
 
-  while( (millis() - beginTime) < DISPLAY_LOOP_TIME) ;
-  //Wait for 20ms to pass before we paint the display again
+}
+
+void Display::_pause_if_required() {
+  // Pause if the display has been painted too recently;
+  while( (millis() - _display_last_painted) < DISPLAY_LOOP_TIME) ;
+  _display_last_painted = millis();
 }
 
 void Display::_turn_all_segments_off () {
