@@ -24,6 +24,18 @@ void Buttons::_record_button_press(int button) {
 int Buttons::get_button_press() {
   int button = _get_current_button();
 
+  // debounce the button press. When speaker in being used with tone it seems
+  // to jitter the button ladder input.
+  if (button != _debounce_button_identified) {
+    // New button - start the debounce timeout
+    _debounce_button_identified = button;
+    _debounce_timeout_start = millis();
+    return NO_BUTTON;
+  } else if (millis() < _debounce_timeout_start + BUTTON_DEBOUNCE_PERIOD) {
+    // Same button as before, but timeout has not finished yet.
+    return NO_BUTTON;
+  }
+
   if (button != _last_button_pressed) {
     _record_button_press(button);
     return button;

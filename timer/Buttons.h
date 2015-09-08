@@ -12,6 +12,10 @@
 #define BUTTON_RESTART        4
 #define BUTTON_MODE_HELD_DOWN 5
 
+// Time in milliseconds that a button needs to be held down for to count as an
+// actualy button press.
+#define BUTTON_DEBOUNCE_PERIOD 50
+
 // Time in milliseconds after which holding donw the plus or minus button
 // results in a new press being registered.
 #define BUTTON_PLUS_MINUS_REPEAT_DELAY 300
@@ -41,6 +45,8 @@ class Buttons
     void _record_button_press(int);
     int _get_current_button();
     int _last_button_pressed;
+    unsigned long _debounce_button_identified;
+    unsigned long _debounce_timeout_start;
     unsigned long _time_button_pressed;
 };
 
