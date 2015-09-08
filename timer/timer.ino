@@ -130,7 +130,12 @@ void pulsing_state_loop (int button) {
     return change_to_state(STATE_BEEPING);
   }
 
-  pulser.pulse();
+  if (time_remaining > PULSE_STARTS_AT / 2) {
+    pulser.pulse();
+  } else {
+    pulser.flash();
+  }
+
   display.display_time( time_remaining / 1000 );
 
   running_state_loop_buttons(button);
