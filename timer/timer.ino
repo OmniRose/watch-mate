@@ -26,6 +26,8 @@ void setup() {
 
   buttons.setup();
 
+  pinMode(PIN_SPEAKER, OUTPUT);
+
   countdown_ends = 0;
   countdown_duration = 900000; // 15 mins in ms
 
@@ -74,6 +76,9 @@ void loop() {
 
 
 void change_to_state(int new_state) {
+
+  noTone(PIN_SPEAKER);
+
   if (new_state == STATE_WAITING) {
     current_state = STATE_WAITING;
   } else if (new_state == STATE_RUNNING) {
@@ -128,10 +133,17 @@ void pulsing_state_loop (int button) {
   pulser.pulse();
   display.display_time( time_remaining / 1000 );
 
+
   running_state_loop_buttons(button);
 }
 
 void beeping_state_loop (int button) {
+
+  if (millis() % PULSER_FLASH_PERIOD > PULSER_FLASH_PERIOD / 2 ) {
+    tone(PIN_SPEAKER, 400);
+  } else {
+    noTone(PIN_SPEAKER);
+  }
 
   pulser.flash();
   display.display_time( 0 );
