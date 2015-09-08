@@ -28,12 +28,14 @@ Display::Display() {
 void Display::display_text(char* text) {
   // Serial.println(text);
 
-  _pause_if_required();
+  if (_is_pause_required()) return;
 
   _display_digit(PIN_DISPLAY_DIGIT_1, text[0]);
   _display_digit(PIN_DISPLAY_DIGIT_2, text[1]);
   _display_digit(PIN_DISPLAY_DIGIT_3, text[2]);
   _display_digit(PIN_DISPLAY_DIGIT_4, text[3]);
+
+  _display_last_painted = millis();
 }
 
 void Display::display_time(int toDisplay) {
@@ -43,24 +45,25 @@ void Display::display_time(int toDisplay) {
   int seconds = toDisplay % 60;
   char numbers_as_letters[] = "0123456789";
 
-  _pause_if_required();
+  if (_is_pause_required()) return;
+
   _display_digit(PIN_DISPLAY_DIGIT_1, ':');
   _display_digit(PIN_DISPLAY_DIGIT_1, numbers_as_letters[minutes / 10 % 10]);
   _display_digit(PIN_DISPLAY_DIGIT_2, numbers_as_letters[minutes % 10     ]);
   _display_digit(PIN_DISPLAY_DIGIT_3, numbers_as_letters[seconds / 10     ]);
   _display_digit(PIN_DISPLAY_DIGIT_4, numbers_as_letters[seconds % 10     ]);
+
+  _display_last_painted = millis();
 }
 
-void Display::_pause_if_required() {
-  // Pause if the display has been painted too recently;
-  while( (millis() - _display_last_painted) < DISPLAY_LOOP_TIME) ;
-  _display_last_painted = millis();
+bool Display::_is_pause_required() {
+  return millis() - _display_last_painted < DISPLAY_OFF_INTERVAL;
 }
 
 void Display::_display_digit(int digit, char toDisplay) {
   _turn_segments_on(toDisplay);
   digitalWrite(digit, DIGIT_ON);
-  delayMicroseconds(DISPLAY_BRIGHTNESS);
+  delayMicroseconds(DISPLAY_MAX_ON_TIME);
   digitalWrite(digit, DIGIT_OFF);
   _turn_all_segments_off();
 }

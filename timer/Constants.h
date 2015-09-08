@@ -32,7 +32,7 @@
 //Display brightness
 //
 //Each digit is on for a certain amount of microseconds Then it is off until we
-//have reached a total of DISPLAY_LOOP_TIME for the function call Let's assume
+//have reached a total of DISPLAY_OFF_INTERVAL for the function call Let's assume
 //each digit is on for 1000us
 //
 //Each digit is on for 1ms, there are 4 digits, so the display is off for 16ms.
@@ -47,8 +47,8 @@
 //50 dim but readable (0.56mA)
 //5 dim but readable (0.31mA)
 //1 dim but readable in dark (0.28mA)
-#define DISPLAY_BRIGHTNESS  500
-#define DISPLAY_LOOP_TIME 10
+#define DISPLAY_MAX_ON_TIME  500 // us
+#define DISPLAY_OFF_INTERVAL 10 // ms
 
 
 // Useful measures of time
