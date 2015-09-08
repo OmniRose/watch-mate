@@ -108,7 +108,7 @@ void waiting_state_loop (int button) {
 }
 
 void start_countdown_timer () {
-  countdown_ends = millis() + countdown_duration + 300;
+  countdown_ends = millis() + countdown_duration + COUNTDOWN_SET_EXTRA_TIME;
   change_to_state(STATE_RUNNING);
 }
 
@@ -133,7 +133,6 @@ void pulsing_state_loop (int button) {
   pulser.pulse();
   display.display_time( time_remaining / 1000 );
 
-
   running_state_loop_buttons(button);
 }
 
@@ -143,7 +142,15 @@ void beeping_state_loop (int button) {
   pulser.flash();
   display.display_time( 0 );
 
-  running_state_loop_buttons(button);
+  // Special case the plus button.
+  if ( button == BUTTON_PLUS ) {
+    // Reset counter and add one minute
+    countdown_ends = millis() + ONE_MINUTE + COUNTDOWN_SET_EXTRA_TIME;
+    change_to_state(STATE_RUNNING);
+  } else {
+    running_state_loop_buttons(button);
+  }
+
 }
 
 void running_state_loop_buttons (int button) {

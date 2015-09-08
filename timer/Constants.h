@@ -62,6 +62,7 @@
 
 // Useful measures of time
 #define ONE_MINUTE 60000
+#define COUNTDOWN_SET_EXTRA_TIME 300 // ms
 
 
 #endif
