@@ -35,8 +35,6 @@ void setup() {
 
 void loop() {
 
-  pulser.pulse();
-
   // Get the button press here and pass it to the state loops later.
   int button = buttons.get_button_press();
 
@@ -55,6 +53,10 @@ void loop() {
 
     case STATE_RUNNING:
       running_state_loop(button);
+      break;
+
+    case STATE_PULSING:
+      pulsing_state_loop(button);
       break;
 
   }
@@ -98,7 +100,20 @@ void start_countdown_timer () {
 void running_state_loop (int button) {
   long time_remaining = countdown_ends - millis();
 
+  if (time_remaining < PULSE_STARTS_AT) {
+    return change_to_state(STATE_PULSING);
+  }
+
   display.display_time( time_remaining / 1000 );
+  running_state_loop_buttons(button);
+}
+
+void pulsing_state_loop (int button) {
+  pulser.pulse();
+
+  long time_remaining = countdown_ends - millis();
+  display.display_time( time_remaining / 1000 );
+
   running_state_loop_buttons(button);
 }
 
