@@ -33,10 +33,6 @@ void setup() {
 
   // start in waiting state
   current_state = STATE_WAITING;
-
-  // for dev
-  countdown_duration = 2000; // 15 mins in ms
-  start_countdown_timer();
 }
 
 void loop() {
