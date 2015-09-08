@@ -35,7 +35,7 @@ void Display::display_text(char* text) {
   _display_digit(PIN_DISPLAY_DIGIT_3, text[2]);
   _display_digit(PIN_DISPLAY_DIGIT_4, text[3]);
 
-  _display_last_painted = millis();
+  _display_last_painted = micros();
 }
 
 void Display::display_time(int toDisplay) {
@@ -53,11 +53,11 @@ void Display::display_time(int toDisplay) {
   _display_digit(PIN_DISPLAY_DIGIT_3, numbers_as_letters[seconds / 10     ]);
   _display_digit(PIN_DISPLAY_DIGIT_4, numbers_as_letters[seconds % 10     ]);
 
-  _display_last_painted = millis();
+  _display_last_painted = micros();
 }
 
 bool Display::_is_pause_required() {
-  return millis() - _display_last_painted < DISPLAY_OFF_INTERVAL;
+  return micros() - _display_last_painted < DISPLAY_OFF_INTERVAL;
 }
 
 void Display::_display_digit(int digit, char toDisplay) {

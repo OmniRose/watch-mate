@@ -10,7 +10,7 @@ void Pulser::pulse() {
 
   // Don't pulse again if it is too soon.
 
-  if ( millis() - _pulse_last_painted < PULSER_OFF_INTERVAL ) {
+  if ( micros() - _pulse_last_painted < PULSER_OFF_INTERVAL ) {
     return;
   }
 
@@ -18,7 +18,7 @@ void Pulser::pulse() {
   delayMicroseconds(PULSER_MAX_ON_TIME);
   digitalWrite(PIN_PULSE_LED, LOW);
 
-  _pulse_last_painted = millis();
+  _pulse_last_painted = micros();
 }
 
 
