@@ -11,6 +11,7 @@ class Pulser
     void pulse();
   private:
     unsigned long _pulse_last_painted;
+    int _get_max_on_time();
 };
 
 #endif

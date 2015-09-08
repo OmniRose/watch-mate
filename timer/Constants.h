@@ -12,7 +12,8 @@
 
 #define PIN_PULSE_LED 3
 #define PULSER_MAX_ON_TIME  200   // us
-#define PULSER_OFF_INTERVAL 1000  // us
+#define PULSER_OFF_INTERVAL 500  // us
+#define PULSE_DURATION 2000 // ms
 
 
 #define PIN_DISPLAY_DIGIT_1  11       // Display pin 1
