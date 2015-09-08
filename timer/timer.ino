@@ -6,10 +6,13 @@
 Display display;
 Buttons buttons;
 
+#define STATE_WAITING 1
+#define STATE_RUNNING 2
+
 unsigned long countdown_ends;
 unsigned long countdown_duration;
 
-#define STATE_RUNNING 1
+int current_state = STATE_WAITING;
 
 void setup() {
   Serial.begin(9600);
@@ -20,7 +23,9 @@ void setup() {
   pinMode(13, OUTPUT);
   countdown_ends = 0;
   countdown_duration = 900000; // 15 mins in ms
-  countdown_ends = millis() + countdown_duration;
+
+  // start in waiting state
+  current_state = STATE_WAITING;
 }
 
 void loop() {
@@ -35,22 +40,53 @@ void loop() {
     return;
   }
 
-  int current_state = STATE_RUNNING;
-
   switch (current_state) {
-    case STATE_RUNNING:
-      long time_remaining = countdown_ends - millis();
 
-      display.display_time( time_remaining / 1000 );
-
-
-      if ( button == BUTTON_RESTART ) {
-        // reset the start time
-        countdown_ends = millis() + countdown_duration + 500;
-      }
+    case STATE_WAITING:
+      waiting_state_loop(button);
       break;
+
+    case STATE_RUNNING:
+      running_state_loop(button);
+      break;
+
   }
 
+
+}
+
+
+void change_to_waiting_state() {
+  current_state = STATE_WAITING;
+}
+
+void waiting_state_loop (int button) {
+  display.display_time( countdown_duration / 1000 );
+
+  if (button == BUTTON_RESTART) {
+    return start_countdown_timer();
+  }
+}
+
+void start_countdown_timer () {
+  countdown_ends = millis() + countdown_duration + 300;
+  current_state = STATE_RUNNING;
+}
+
+void running_state_loop (int button) {
+  long time_remaining = countdown_ends - millis();
+
+  display.display_time( time_remaining / 1000 );
+
+  if ( button == BUTTON_RESTART ) {
+    return start_countdown_timer();
+  } else if ( button == BUTTON_MODE ) {
+    return change_to_waiting_state();
+  } else if ( button == BUTTON_PLUS ) {
+    countdown_ends += ONE_MINUTE;
+  } else if ( button == BUTTON_MINUS && time_remaining > ONE_MINUTE ) {
+    countdown_ends -= ONE_MINUTE;
+  }
 
 }
 

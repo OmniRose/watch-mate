@@ -46,4 +46,8 @@
 #define DISPLAY_BRIGHTNESS  500
 #define DISPLAY_LOOP_TIME 10
 
+// Useful measures of time
+#define ONE_MINUTE 60000
+
+
 #endif
