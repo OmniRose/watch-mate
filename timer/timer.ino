@@ -1,9 +1,11 @@
 
 #include "Constants.h"
 #include "Display.h"
+#include "Pulser.h"
 #include "Buttons.h"
 
 Display display;
+Pulser  pulser;
 Buttons buttons;
 
 #define STATE_WAITING  1
@@ -24,8 +26,6 @@ void setup() {
 
   buttons.setup();
 
-  pinMode(PIN_PULSE_LED, OUTPUT);
-
   countdown_ends = 0;
   countdown_duration = 900000; // 15 mins in ms
 
@@ -35,9 +35,7 @@ void setup() {
 
 void loop() {
 
-  digitalWrite(PIN_PULSE_LED, HIGH);
-  delayMicroseconds(2000);
-  digitalWrite(PIN_PULSE_LED, LOW);
+  pulser.pulse();
 
   // Get the button press here and pass it to the state loops later.
   int button = buttons.get_button_press();

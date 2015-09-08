@@ -11,6 +11,8 @@
 
 
 #define PIN_PULSE_LED 3
+#define PULSER_MAX_ON_TIME  2000 // us
+#define PULSER_OFF_INTERVAL 10   // ms
 
 
 #define PIN_DISPLAY_DIGIT_1  11       // Display pin 1
@@ -47,6 +49,7 @@
 //1 dim but readable in dark (0.28mA)
 #define DISPLAY_BRIGHTNESS  500
 #define DISPLAY_LOOP_TIME 10
+
 
 // Useful measures of time
 #define ONE_MINUTE 60000
