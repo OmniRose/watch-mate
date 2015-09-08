@@ -2,10 +2,12 @@
 #include "Constants.h"
 #include "Display.h"
 #include "Pulser.h"
+#include "Speaker.h"
 #include "Buttons.h"
 
 Display display;
 Pulser  pulser;
+Speaker speaker;
 Buttons buttons;
 
 #define STATE_WAITING  1
@@ -25,8 +27,6 @@ void setup() {
   Serial.println("Starting up!");
 
   buttons.setup();
-
-  pinMode(PIN_SPEAKER, OUTPUT);
 
   countdown_ends = 0;
   countdown_duration = 900000; // 15 mins in ms
@@ -77,7 +77,7 @@ void loop() {
 
 void change_to_state(int new_state) {
 
-  noTone(PIN_SPEAKER);
+  speaker.off();
 
   if (new_state == STATE_WAITING) {
     current_state = STATE_WAITING;
@@ -139,12 +139,7 @@ void pulsing_state_loop (int button) {
 
 void beeping_state_loop (int button) {
 
-  if (millis() % PULSER_FLASH_PERIOD > PULSER_FLASH_PERIOD / 2 ) {
-    tone(PIN_SPEAKER, 400);
-  } else {
-    noTone(PIN_SPEAKER);
-  }
-
+  speaker.on();
   pulser.flash();
   display.display_time( 0 );
 

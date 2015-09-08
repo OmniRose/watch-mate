@@ -1,6 +1,5 @@
 #include "Arduino.h"
 #include "Pulser.h"
-#include "fscale.h"
 
 Pulser::Pulser() {
   pinMode(PIN_PULSE_LED, OUTPUT);
