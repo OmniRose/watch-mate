@@ -10,11 +10,14 @@
 #define PIN_BUTTON_LADDER A5
 
 
-#define PIN_PULSE_LED 3
+#define PIN_PULSE_LED 2
 #define PULSER_MAX_ON_TIME  200   // us
 #define PULSER_OFF_INTERVAL 500  // us
 #define PULSE_DURATION 2000 // ms
 #define PULSE_STARTS_AT 120000 // 2 mins in ms
+
+
+#define PIN_SPEAKER 3
 
 
 #define PIN_DISPLAY_DIGIT_1  11       // Display pin 1
