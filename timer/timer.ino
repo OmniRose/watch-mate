@@ -60,12 +60,17 @@ void loop() {
 }
 
 
-void change_to_waiting_state() {
-  current_state = STATE_WAITING;
-}
-
-void change_to_mode_state() {
-  Serial.println("FIXME - code up change_to_mode_state");
+void change_to_state(int new_state) {
+  if (new_state == STATE_WAITING) {
+    current_state = STATE_WAITING;
+  } else if (new_state == STATE_RUNNING) {
+    current_state = STATE_RUNNING;
+  } else if (new_state == STATE_PULSING) {
+    current_state = STATE_PULSING;
+  } else if (new_state == STATE_MODE) {
+    Serial.println("FIXME - code up change_to_state(STATE_MODE)");
+    change_to_state(STATE_WAITING);
+  }
 }
 
 void waiting_state_loop (int button) {
@@ -74,7 +79,7 @@ void waiting_state_loop (int button) {
   if (button == BUTTON_RESTART) {
     return start_countdown_timer();
   } else if ( button == BUTTON_MODE ) {
-    return change_to_mode_state();
+    return change_to_state(STATE_MODE);
   } else if ( button == BUTTON_PLUS ) {
     countdown_duration += ONE_MINUTE;
   } else if ( button == BUTTON_MINUS && countdown_duration >= ONE_MINUTE ) {
@@ -84,7 +89,7 @@ void waiting_state_loop (int button) {
 
 void start_countdown_timer () {
   countdown_ends = millis() + countdown_duration + 300;
-  current_state = STATE_RUNNING;
+  change_to_state(STATE_RUNNING);
 }
 
 void running_state_loop (int button) {
@@ -98,15 +103,15 @@ void running_state_loop_buttons (int button) {
   if ( button == BUTTON_RESTART ) {
     start_countdown_timer();
   } else if ( button == BUTTON_MODE ) {
-    change_to_waiting_state();
+    change_to_state(STATE_WAITING);
   } else if ( button == BUTTON_PLUS ) {
     countdown_ends += ONE_MINUTE;
-    current_state = STATE_RUNNING;
+    change_to_state(STATE_RUNNING);
   } else if ( button == BUTTON_MINUS ) {
     long time_remaining = countdown_ends - millis();
     if ( time_remaining > ONE_MINUTE ) {
       countdown_ends -= ONE_MINUTE;
-      current_state = STATE_RUNNING;
+      change_to_state(STATE_RUNNING);
     }
   }
 }
