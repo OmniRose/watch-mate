@@ -58,8 +58,8 @@ void Display::_pause_if_required() {
 }
 
 void Display::_display_digit(int digit, char toDisplay) {
-  digitalWrite(digit, DIGIT_ON);
   _turn_segments_on(toDisplay);
+  digitalWrite(digit, DIGIT_ON);
   delayMicroseconds(DISPLAY_BRIGHTNESS);
   digitalWrite(digit, DIGIT_OFF);
   _turn_all_segments_off();
