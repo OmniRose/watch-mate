@@ -7,10 +7,27 @@ Pulser::Pulser() {
   _pulse_last_painted = 0;
 }
 
+void Pulser::flash() {
+
+  // Don't pulse again if it is too soon.
+  if ( micros() - _pulse_last_painted < PULSER_OFF_INTERVAL ) {
+    return;
+  }
+
+  if (millis() % PULSER_FLASH_PERIOD > PULSER_FLASH_PERIOD / 2 ) {
+    // keep this code as fast as possible - calculate max_on above.
+    digitalWrite(PIN_PULSE_LED, HIGH);
+    delayMicroseconds(PULSER_MAX_ON_TIME);
+    digitalWrite(PIN_PULSE_LED, LOW);
+  }
+
+  _pulse_last_painted = micros();
+}
+
+
 void Pulser::pulse() {
 
   // Don't pulse again if it is too soon.
-
   if ( micros() - _pulse_last_painted < PULSER_OFF_INTERVAL ) {
     return;
   }

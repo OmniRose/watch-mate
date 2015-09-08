@@ -8,6 +8,7 @@ class Pulser
 {
   public:
     Pulser();
+    void flash();
     void pulse();
   private:
     unsigned long _pulse_last_painted;

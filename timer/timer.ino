@@ -31,6 +31,10 @@ void setup() {
 
   // start in waiting state
   current_state = STATE_WAITING;
+
+  // for dev
+  countdown_duration = 2000; // 15 mins in ms
+  start_countdown_timer();
 }
 
 void loop() {
@@ -59,6 +63,10 @@ void loop() {
       pulsing_state_loop(button);
       break;
 
+    case STATE_BEEPING:
+      beeping_state_loop(button);
+      break;
+
   }
 
 
@@ -72,6 +80,8 @@ void change_to_state(int new_state) {
     current_state = STATE_RUNNING;
   } else if (new_state == STATE_PULSING) {
     current_state = STATE_PULSING;
+  } else if (new_state == STATE_BEEPING) {
+    current_state = STATE_BEEPING;
   } else if (new_state == STATE_MODE) {
     Serial.println("FIXME - code up change_to_state(STATE_MODE)");
     change_to_state(STATE_WAITING);
@@ -109,10 +119,22 @@ void running_state_loop (int button) {
 }
 
 void pulsing_state_loop (int button) {
-  pulser.pulse();
-
   long time_remaining = countdown_ends - millis();
+
+  if (time_remaining <= 0) {
+    return change_to_state(STATE_BEEPING);
+  }
+
+  pulser.pulse();
   display.display_time( time_remaining / 1000 );
+
+  running_state_loop_buttons(button);
+}
+
+void beeping_state_loop (int button) {
+
+  pulser.flash();
+  display.display_time( 0 );
 
   running_state_loop_buttons(button);
 }

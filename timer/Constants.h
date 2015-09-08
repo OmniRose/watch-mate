@@ -14,6 +14,7 @@
 #define PULSER_MAX_ON_TIME  200   // us
 #define PULSER_OFF_INTERVAL 500  // us
 #define PULSE_DURATION 2000 // ms
+#define PULSER_FLASH_PERIOD 800 // ms
 #define PULSE_STARTS_AT 120000 // 2 mins in ms
 
 
