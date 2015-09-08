@@ -11,8 +11,8 @@
 
 
 #define PIN_PULSE_LED 3
-#define PULSER_MAX_ON_TIME  2000 // us
-#define PULSER_OFF_INTERVAL 10   // ms
+#define PULSER_MAX_ON_TIME  200 // us
+#define PULSER_OFF_INTERVAL 1   // ms
 
 
 #define PIN_DISPLAY_DIGIT_1  11       // Display pin 1
@@ -39,16 +39,19 @@
 //That's a ratio of 1ms to 16ms or 6.25% on time (PWM). Let's define a variable
 //called brightness that varies from:
 //
-//5000 blindingly bright (15.7mA current draw per digit)
-//2000 shockingly bright (11.4mA current draw per digit)
-//1000 pretty bright (5.9mA)
-//500 normal (3mA)
-//200 dim but readable (1.4mA)
-//50 dim but readable (0.56mA)
-//5 dim but readable (0.31mA)
-//1 dim but readable in dark (0.28mA)
-#define DISPLAY_MAX_ON_TIME  500 // us
-#define DISPLAY_OFF_INTERVAL 10 // ms
+// WITH DISPLAY_OFF_INTERVAL of 1ms
+//   500 blindingly bright (15.7mA current draw per digit)
+//   200 shockingly bright (11.4mA current draw per digit)
+//   100 pretty bright (5.9mA)
+//   50 normal (3mA)
+//   20 dim but readable (1.4mA)
+//   5 dim but readable (0.56mA)
+//
+// WITH DISPLAY_OFF_INTERVAL of 10ms
+//   5 dim but readable (0.31mA)
+//   1 dim but readable in dark (0.28mA)
+#define DISPLAY_MAX_ON_TIME  50 // us
+#define DISPLAY_OFF_INTERVAL 1 // ms
 
 
 // Useful measures of time
