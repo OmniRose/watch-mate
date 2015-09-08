@@ -10,6 +10,9 @@
 #define PIN_BUTTON_LADDER A5
 
 
+#define PIN_PULSE_LED 3
+
+
 #define PIN_DISPLAY_DIGIT_1  11       // Display pin 1
 #define PIN_DISPLAY_DIGIT_2  10       // Display pin 2
 #define PIN_DISPLAY_DIGIT_3  9        // Display pin 6
@@ -23,7 +26,6 @@
 #define PIN_DISPLAY_SEGMENT_F 7       //Display pin 11
 #define PIN_DISPLAY_SEGMENT_G 8       //Display pin 15
 #define PIN_DISPLAY_SEGMENT_COLON 12  // Display pin 12
-
 
 //Display brightness
 //
