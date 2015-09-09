@@ -17,12 +17,17 @@ Display::Display() {
   pinMode(PIN_DISPLAY_SEGMENT_G, OUTPUT);
   pinMode(PIN_DISPLAY_SEGMENT_COLON, OUTPUT);
 
+   // Ensure all off before enabling the segments - avoids a flash.
+  _turn_all_segments_off();
+
   pinMode(PIN_DISPLAY_DIGIT_1, OUTPUT);
   pinMode(PIN_DISPLAY_DIGIT_2, OUTPUT);
   pinMode(PIN_DISPLAY_DIGIT_3, OUTPUT);
   pinMode(PIN_DISPLAY_DIGIT_4, OUTPUT);
 
-  digitalWrite(PIN_DISPLAY_SEGMENT_COLON, SEGMENT_OFF);
+  // Blank screen again so that all digit pins are in known good state.
+  display_text("    ");
+
 }
 
 void Display::display_text(char* text) {
