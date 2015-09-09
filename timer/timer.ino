@@ -23,6 +23,7 @@ Countdown countdown;
 // unsigned long countdown_duration;
 
 int current_state = STATE_WAITING;
+unsigned long current_state_last_changed;
 
 void setup() {
   Serial.begin(9600);
@@ -31,7 +32,7 @@ void setup() {
   buttons.setup();
 
   // start in waiting state
-  current_state = STATE_WAITING;
+  change_to_state(STATE_WAITING);
 }
 
 void loop() {
@@ -73,6 +74,7 @@ void loop() {
 void change_to_state(int new_state) {
 
   speaker.off();
+  current_state_last_changed = millis();
 
   if (new_state == STATE_WAITING) {
     current_state = STATE_WAITING;
@@ -90,6 +92,11 @@ void change_to_state(int new_state) {
 
 void waiting_state_loop (int button) {
   display.display_time( countdown.duration() / 1000 );
+
+  if (millis() - current_state_last_changed > MAX_WAITING_IDLE) {
+    // Timeout, shut down.
+    shutdown();
+  }
 
   if (button == BUTTON_RESTART) {
     countdown.restart();

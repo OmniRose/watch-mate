@@ -64,5 +64,6 @@
 #define ONE_MINUTE 60000
 #define COUNTDOWN_SET_EXTRA_TIME 300 // ms
 #define COUNTDOWN_DEFAULT_DURATION 900000 // 15 mins in ms
+#define MAX_WAITING_IDLE 600000 // 10 mins in ms
 
 #endif
