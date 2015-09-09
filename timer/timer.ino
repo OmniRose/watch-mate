@@ -4,11 +4,13 @@
 #include "Pulser.h"
 #include "Speaker.h"
 #include "Buttons.h"
+#include "Countdown.h"
 
 Display display;
 Pulser  pulser;
 Speaker speaker;
 Buttons buttons;
+Countdown countdown;
 
 #define STATE_WAITING  1
 #define STATE_RUNNING  2
@@ -17,8 +19,8 @@ Buttons buttons;
 #define STATE_ALARMING 5
 #define STATE_MODE     6
 
-unsigned long countdown_ends;
-unsigned long countdown_duration;
+// unsigned long countdown_ends;
+// unsigned long countdown_duration;
 
 int current_state = STATE_WAITING;
 
@@ -28,8 +30,9 @@ void setup() {
 
   buttons.setup();
 
-  countdown_ends = 0;
-  countdown_duration = 900000; // 15 mins in ms
+  countdown.duration(90000); // 15 mins in ms
+  // countdown_ends = 0;
+  // countdown_duration = 900000; // 15 mins in ms
 
   // start in waiting state
   current_state = STATE_WAITING;
@@ -90,37 +93,32 @@ void change_to_state(int new_state) {
 }
 
 void waiting_state_loop (int button) {
-  display.display_time( countdown_duration / 1000 );
+  display.display_time( countdown.duration() / 1000 );
 
   if (button == BUTTON_RESTART) {
-    return start_countdown_timer();
+    countdown.restart();
+    change_to_state(STATE_RUNNING);
   } else if ( button == BUTTON_MODE ) {
-    return change_to_state(STATE_MODE);
+    change_to_state(STATE_MODE);
   } else if ( button == BUTTON_PLUS ) {
-    countdown_duration += ONE_MINUTE;
-  } else if ( button == BUTTON_MINUS && countdown_duration >= ONE_MINUTE ) {
-    countdown_duration -= ONE_MINUTE;
+    countdown.change_duration(ONE_MINUTE);
+  } else if ( button == BUTTON_MINUS ) {
+    countdown.change_duration(-ONE_MINUTE);
   }
-}
-
-void start_countdown_timer () {
-  countdown_ends = millis() + countdown_duration + COUNTDOWN_SET_EXTRA_TIME;
-  change_to_state(STATE_RUNNING);
 }
 
 void running_state_loop (int button) {
-  long time_remaining = countdown_ends - millis();
-
-  if (time_remaining < PULSE_STARTS_AT) {
+  if (countdown.time_remaining() < PULSE_STARTS_AT) {
     return change_to_state(STATE_PULSING);
   }
 
-  display.display_time( time_remaining / 1000 );
+  display.display_time( countdown.time_remaining_seconds() );
+
   running_state_loop_buttons(button);
 }
 
 void pulsing_state_loop (int button) {
-  long time_remaining = countdown_ends - millis();
+  long time_remaining = countdown.time_remaining();
 
   if (time_remaining <= 0) {
     return change_to_state(STATE_BEEPING);
@@ -146,7 +144,7 @@ void beeping_state_loop (int button) {
   // Special case the plus button.
   if ( button == BUTTON_PLUS ) {
     // Reset counter and add one minute
-    countdown_ends = millis() + ONE_MINUTE + COUNTDOWN_SET_EXTRA_TIME;
+    countdown.change_end_time(ONE_MINUTE);
     change_to_state(STATE_RUNNING);
   } else {
     running_state_loop_buttons(button);
@@ -156,18 +154,15 @@ void beeping_state_loop (int button) {
 
 void running_state_loop_buttons (int button) {
   if ( button == BUTTON_RESTART ) {
-    start_countdown_timer();
+    countdown.restart();
   } else if ( button == BUTTON_MODE ) {
     change_to_state(STATE_WAITING);
   } else if ( button == BUTTON_PLUS ) {
-    countdown_ends += ONE_MINUTE;
+    countdown.change_end_time(ONE_MINUTE);
     change_to_state(STATE_RUNNING);
   } else if ( button == BUTTON_MINUS ) {
-    long time_remaining = countdown_ends - millis();
-    if ( time_remaining > ONE_MINUTE ) {
-      countdown_ends -= ONE_MINUTE;
-      change_to_state(STATE_RUNNING);
-    }
+    countdown.change_end_time(-ONE_MINUTE);
+    change_to_state(STATE_RUNNING);
   }
 }
 
