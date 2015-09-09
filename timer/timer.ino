@@ -30,10 +30,6 @@ void setup() {
 
   buttons.setup();
 
-  countdown.duration(90000); // 15 mins in ms
-  // countdown_ends = 0;
-  // countdown_duration = 900000; // 15 mins in ms
-
   // start in waiting state
   current_state = STATE_WAITING;
 }

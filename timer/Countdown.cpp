@@ -2,6 +2,7 @@
 #include "Countdown.h"
 
 Countdown::Countdown() {
+  _duration = COUNTDOWN_DEFAULT_DURATION;
 }
 
 long Countdown::duration() {
