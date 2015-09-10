@@ -7,7 +7,10 @@
 #include "Arduino.h"
 
 
+#define PIN_MODE_BUTTON 2
 #define PIN_BUTTON_LADDER A5
+
+#define WAKE_FROM_SLEEP_INTERRUPT 0 // hardcoded to pin 2
 
 
 #define PIN_PULSE_LED 13
@@ -65,5 +68,6 @@
 #define COUNTDOWN_SET_EXTRA_TIME 300 // ms
 #define COUNTDOWN_DEFAULT_DURATION 900000 // 15 mins in ms
 #define MAX_WAITING_IDLE 600000 // 10 mins in ms
+#define POST_WAKEUP_BUTTON_IGNORE 500 // ms
 
 #endif

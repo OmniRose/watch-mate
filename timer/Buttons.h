@@ -26,14 +26,12 @@
 
 // min and max values reod from the analogue input that match up to the button
 // being pressed.
-#define BUTTON_MODE_MAX_VALUE     1023
-#define BUTTON_MODE_MIN_VALUE     1020
-#define BUTTON_PLUS_MAX_VALUE     1010
-#define BUTTON_PLUS_MIN_VALUE      990
-#define BUTTON_MINUS_MAX_VALUE     515
-#define BUTTON_MINUS_MIN_VALUE     505
-#define BUTTON_RESTART_MAX_VALUE    10
-#define BUTTON_RESTART_MIN_VALUE     5
+#define BUTTON_PLUS_MAX_VALUE     1023
+#define BUTTON_PLUS_MIN_VALUE     1020
+#define BUTTON_MINUS_MAX_VALUE    1010
+#define BUTTON_MINUS_MIN_VALUE     990
+#define BUTTON_RESTART_MAX_VALUE   515
+#define BUTTON_RESTART_MIN_VALUE   505
 
 class Buttons
 {

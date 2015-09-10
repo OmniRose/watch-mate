@@ -6,6 +6,7 @@ Buttons::Buttons() {}
 
 void Buttons::setup () {
   pinMode(PIN_BUTTON_LADDER, INPUT);
+  pinMode(PIN_MODE_BUTTON, INPUT_PULLUP);
 
   reset();
 }
@@ -77,21 +78,23 @@ int Buttons::get_button_press() {
 }
 
 int Buttons::_get_current_button() {
-  int button_pin_value = analogRead(PIN_BUTTON_LADDER);
 
-  // Serial.print("button_pin_value value: ");
-  // Serial.println(button_pin_value);
+  int button_ladder_pin_value = analogRead(PIN_BUTTON_LADDER);
+  int mode_button_value = digitalRead(PIN_MODE_BUTTON);
 
-  if (button_pin_value >= BUTTON_MODE_MIN_VALUE && button_pin_value <= BUTTON_MODE_MAX_VALUE) {
+  // Serial.print("button_ladder_pin_value value: ");
+  // Serial.println(button_ladder_pin_value);
+
+  if (mode_button_value == LOW) {
     return BUTTON_MODE;
   }
-  else if (button_pin_value >= BUTTON_PLUS_MIN_VALUE && button_pin_value <= BUTTON_PLUS_MAX_VALUE) {
+  else if (button_ladder_pin_value >= BUTTON_PLUS_MIN_VALUE && button_ladder_pin_value <= BUTTON_PLUS_MAX_VALUE) {
     return BUTTON_PLUS;
   }
-  else if (button_pin_value >= BUTTON_MINUS_MIN_VALUE && button_pin_value <= BUTTON_MINUS_MAX_VALUE) {
+  else if (button_ladder_pin_value >= BUTTON_MINUS_MIN_VALUE && button_ladder_pin_value <= BUTTON_MINUS_MAX_VALUE) {
     return BUTTON_MINUS;
   }
-  else if (button_pin_value >= BUTTON_RESTART_MIN_VALUE && button_pin_value <= BUTTON_RESTART_MAX_VALUE) {
+  else if (button_ladder_pin_value >= BUTTON_RESTART_MIN_VALUE && button_ladder_pin_value <= BUTTON_RESTART_MAX_VALUE) {
     return BUTTON_RESTART;
   }
   else {

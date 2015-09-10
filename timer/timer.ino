@@ -99,6 +99,7 @@ void waiting_state_loop (int button) {
     // Timeout, shut down.
     shutdown.suspend();
     change_to_state(STATE_WAITING);
+    return;
   }
 
   if (button == BUTTON_RESTART) {
@@ -175,21 +176,31 @@ void running_state_loop_buttons (int button) {
 void enter_shutdown_state () {
 
   Serial.println("Starting shutdown...");
-  long off_at = millis() + 3999;
+  long off_at = millis() + 2999;
+
+  bool should_suspend = false;
+
 
   while ( buttons.get_button_press() == BUTTON_MODE_HELD_DOWN ) {
     long remaining = off_at - millis();
-    if (remaining > 0) {
-      char off[] = "OFF ";
-      off[3] = int(remaining / 1000) + 48; // to ascii code
-      display.display_text( off );
+    char off[] = "OFF ";
+    off[3] = int((remaining + 1000) / 1000) + 48; // to ascii code
 
+    if (remaining > 0) {
+      display.display_text( off );
     } else {
-      // enter infinite loop displaying 'off'. Power down will be handled by
-      // external circuitry
-      shutdown.suspend();
-      change_to_state(STATE_WAITING);
+      should_suspend = true;
+      display.display_text("    "); // blank the screen
     }
   }
 
+  if (should_suspend) {
+
+    shutdown.suspend();
+
+    // On waking go back to waiting mode and return out of this loop
+    buttons.reset();
+    buttons.ignore_for(POST_WAKEUP_BUTTON_IGNORE);
+    change_to_state(STATE_WAITING);
+  }
 }
