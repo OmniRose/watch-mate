@@ -5,12 +5,14 @@
 #include "Speaker.h"
 #include "Buttons.h"
 #include "Countdown.h"
+#include "Shutdown.h"
 
 Display display;
 Pulser  pulser;
 Speaker speaker;
 Buttons buttons;
 Countdown countdown;
+Shutdown shutdown;
 
 #define STATE_WAITING  1
 #define STATE_RUNNING  2
@@ -95,7 +97,8 @@ void waiting_state_loop (int button) {
 
   if (millis() - current_state_last_changed > MAX_WAITING_IDLE) {
     // Timeout, shut down.
-    shutdown();
+    shutdown.suspend();
+    change_to_state(STATE_WAITING);
   }
 
   if (button == BUTTON_RESTART) {
@@ -184,15 +187,9 @@ void enter_shutdown_state () {
     } else {
       // enter infinite loop displaying 'off'. Power down will be handled by
       // external circuitry
-      shutdown();
+      shutdown.suspend();
+      change_to_state(STATE_WAITING);
     }
   }
 
-}
-
-void shutdown () {
-  Serial.println("OFF!");
-  while (true) {
-    display.display_text("BYE");
-  }
 }
