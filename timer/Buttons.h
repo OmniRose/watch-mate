@@ -40,7 +40,9 @@ class Buttons
   public:
     Buttons();
     void setup();
+    void reset();
     int get_button_press();
+    void ignore_for(long);
   private:
     void _record_button_press(int);
     int _get_current_button();
@@ -48,6 +50,7 @@ class Buttons
     unsigned long _debounce_button_identified;
     unsigned long _debounce_timeout_start;
     unsigned long _time_button_pressed;
+    unsigned long _ignore_buttons_until;
 };
 
 #endif

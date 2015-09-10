@@ -7,8 +7,17 @@ Buttons::Buttons() {}
 void Buttons::setup () {
   pinMode(PIN_BUTTON_LADDER, INPUT);
 
+  reset();
+}
+
+void Buttons::reset () {
   // initialize values to sensible defaults
   _record_button_press(NO_BUTTON);
+  ignore_for(0);
+}
+
+void Buttons::ignore_for (long timeout) {
+  _ignore_buttons_until = millis() + timeout;
 }
 
 void Buttons::_record_button_press(int button) {
@@ -23,6 +32,10 @@ void Buttons::_record_button_press(int button) {
 
 int Buttons::get_button_press() {
   int button = _get_current_button();
+
+  if (millis() < _ignore_buttons_until) {
+    return NO_BUTTON;
+  }
 
   // debounce the button press. When speaker in being used with tone it seems
   // to jitter the button ladder input.
