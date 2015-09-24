@@ -209,10 +209,10 @@ void mode_state_loop (int button) {
     display.display_text( "vol" );
 
     if ( button == BUTTON_PLUS ) {
-      Serial.println("louder");
+      speaker.louder();
       speaker.beep();
     } else if ( button == BUTTON_MINUS ) {
-      Serial.println("quieter");
+      speaker.quieter();
       speaker.beep();
     }
 

@@ -10,9 +10,12 @@ class Speaker
   public:
     Speaker();
     void beep();
+    void louder();
+    void quieter();
     void on();
     void off();
   private:
+    int _volume;
 };
 
 #endif

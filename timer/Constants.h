@@ -27,6 +27,11 @@
 #define PIN_SPEAKER_B 10
 // FIXME - note that there should be a 100omh resistor, but we're using 220ohm as it was all we had.
 
+#define SPEAKER_VOLUME_MAX 10 // see toneAC for details
+#define SPEAKER_VOLUME_MIN 1
+#define SPEAKER_VOLUME_CHANGE_INCREMENT 1
+#define SPEAKER_BEEP_FREQUENCY 1046
+
 #define PIN_DISPLAY_DIGIT_1  11       // Display pin 1
 #define PIN_DISPLAY_DIGIT_2  A3       // Display pin 2
 #define PIN_DISPLAY_DIGIT_3  A4       // Display pin 6
