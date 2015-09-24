@@ -21,8 +21,11 @@
 #define PULSE_STARTS_AT 120000 // 2 mins in ms
 
 
-#define PIN_SPEAKER 3
-
+// toneAC library has these hardcoded (I believe) but setting them here so that
+// there is a clear reference to which pins are used for the speaker.
+#define PIN_SPEAKER_A 9
+#define PIN_SPEAKER_B 10
+// FIXME - note that there should be a 100omh resistor, but we're using 220ohm as it was all we had.
 
 #define PIN_DISPLAY_DIGIT_1  11       // Display pin 1
 #define PIN_DISPLAY_DIGIT_2  A3       // Display pin 2

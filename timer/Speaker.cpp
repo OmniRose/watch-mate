@@ -1,12 +1,13 @@
 #include "Arduino.h"
 #include "Speaker.h"
+#include "toneAC.h"
 
 Speaker::Speaker() {
-  pinMode(PIN_SPEAKER, OUTPUT);
+  // pinMode(PIN_SPEAKER, OUTPUT);
 }
 
 void Speaker::beep() {
-  tone(PIN_SPEAKER, 1046, 200);
+  toneAC(2000, 5, 200, true);
 }
 
 void Speaker::on() {
@@ -15,14 +16,14 @@ void Speaker::on() {
   int cutoff = PULSER_FLASH_PERIOD * 0.5;
 
   if ( point_in_period > cutoff ) {
-    tone(PIN_SPEAKER, 1046);
+    toneAC(1046, 5, 0, true);
   } else {
-    noTone(PIN_SPEAKER);
+    noToneAC();
   }
 
 }
 
 
 void Speaker::off() {
-  noTone(PIN_SPEAKER);
+  noToneAC();
 }

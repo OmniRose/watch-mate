@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 #include "Constants.h"
+#include "toneAC.h"
 
 class Speaker
 {
