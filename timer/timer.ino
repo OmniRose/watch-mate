@@ -208,8 +208,10 @@ void mode_state_loop (int button) {
 
     if ( button == BUTTON_PLUS ) {
       Serial.println("louder");
+      speaker.beep();
     } else if ( button == BUTTON_MINUS ) {
       Serial.println("quieter");
+      speaker.beep();
     }
 
   }

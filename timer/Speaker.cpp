@@ -5,6 +5,10 @@ Speaker::Speaker() {
   pinMode(PIN_SPEAKER, OUTPUT);
 }
 
+void Speaker::beep() {
+  tone(PIN_SPEAKER, 1046, 200);
+}
+
 void Speaker::on() {
 
   int point_in_period = millis() % PULSER_FLASH_PERIOD;

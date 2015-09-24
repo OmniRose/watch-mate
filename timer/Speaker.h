@@ -8,6 +8,7 @@ class Speaker
 {
   public:
     Speaker();
+    void beep();
     void on();
     void off();
   private:
