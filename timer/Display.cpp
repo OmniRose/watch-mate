@@ -8,6 +8,11 @@
 #define SEGMENT_OFF HIGH
 
 Display::Display() {
+
+  // set to max when starting up
+  _digit_on_time   = DISPLAY_DIGIT_ON_TIME_MAX;
+  _redraw_interval = DISPLAY_REDRAW_INTERVAL_MIN;
+
   pinMode(PIN_DISPLAY_SEGMENT_A, OUTPUT);
   pinMode(PIN_DISPLAY_SEGMENT_B, OUTPUT);
   pinMode(PIN_DISPLAY_SEGMENT_C, OUTPUT);
@@ -30,6 +35,24 @@ Display::Display() {
 
 }
 
+void Display::brighter() {
+  // first shorten redraw interval, then increase display time
+  if (_redraw_interval > DISPLAY_REDRAW_INTERVAL_MIN) {
+    _redraw_interval = max(_redraw_interval - DISPLAY_REDRAW_INTERVAL_CHANGE_INCREMENT, DISPLAY_REDRAW_INTERVAL_MIN);
+  } else {
+    _digit_on_time = min(_digit_on_time + DISPLAY_DIGIT_ON_TIME_CHANGE_INCREMENT, DISPLAY_DIGIT_ON_TIME_MAX);
+  }
+}
+
+void Display::dimmer() {
+  // first shorten display time, then increase redraw interval
+  if (_digit_on_time > DISPLAY_DIGIT_ON_TIME_MIN) {
+    _digit_on_time = max(_digit_on_time - DISPLAY_DIGIT_ON_TIME_CHANGE_INCREMENT, DISPLAY_DIGIT_ON_TIME_MIN);
+  } else {
+    _redraw_interval = min(_redraw_interval + DISPLAY_REDRAW_INTERVAL_CHANGE_INCREMENT, DISPLAY_REDRAW_INTERVAL_MAX);
+  }
+}
+
 void Display::display_text(char* text) {
   // Serial.println(text);
 
@@ -45,12 +68,11 @@ void Display::display_text(char* text) {
 
 void Display::display_time(int toDisplay) {
 
+  if (_is_pause_required()) return;
 
   int minutes = toDisplay / 60;
   int seconds = toDisplay % 60;
   char numbers_as_letters[] = "0123456789";
-
-  if (_is_pause_required()) return;
 
   _display_digit(PIN_DISPLAY_DIGIT_1, ':');
   _display_digit(PIN_DISPLAY_DIGIT_1, numbers_as_letters[minutes / 10 % 10]);
@@ -62,13 +84,13 @@ void Display::display_time(int toDisplay) {
 }
 
 bool Display::_is_pause_required() {
-  return micros() - _display_last_painted < DISPLAY_OFF_INTERVAL;
+  return micros() - _display_last_painted < _redraw_interval;
 }
 
 void Display::_display_digit(int digit, char toDisplay) {
   _turn_segments_on(toDisplay);
   digitalWrite(digit, DIGIT_ON);
-  delayMicroseconds(DISPLAY_MAX_ON_TIME);
+  delayMicroseconds(_digit_on_time);
   digitalWrite(digit, DIGIT_OFF);
   _turn_all_segments_off();
 }
