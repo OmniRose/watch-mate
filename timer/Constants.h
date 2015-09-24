@@ -69,5 +69,7 @@
 #define COUNTDOWN_DEFAULT_DURATION 900000 // 15 mins in ms
 #define MAX_WAITING_IDLE 600000 // 10 mins in ms
 #define POST_WAKEUP_BUTTON_IGNORE 500 // ms
+#define STATE_MODE_TIMEOUT 5000 // 5 secs in ms
+
 
 #endif

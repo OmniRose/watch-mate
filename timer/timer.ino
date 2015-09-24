@@ -177,7 +177,6 @@ void running_state_loop_buttons (int button) {
 #define MODE_SUBSTATE_BRIGHTNESS 1
 #define MODE_SUBSTATE_VOLUME     2
 
-#define STATE_MODE_TIMEOUT 5000 // 5 secs
 
 void mode_state_loop (int button) {
 
@@ -215,13 +214,13 @@ void mode_state_loop (int button) {
 
   }
 
-  // if (millis() - current_state_last_changed > MAX_WAITING_IDLE) {
-  //   // Timeout, shut down.
-  //   shutdown.suspend();
-  //   change_to_state(STATE_WAITING);
-  //   return;
-  // }
-  //
+
+  // if we've been in mode state for a while not doing anything return to
+  // waiting mode
+  if (millis() - buttons.millis_last_button_pressed() > STATE_MODE_TIMEOUT) {
+    change_to_state(STATE_WAITING);
+    return;
+  }
 }
 
 
