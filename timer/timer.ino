@@ -37,7 +37,6 @@ void setup() {
 
   // start in waiting state
   change_to_state(STATE_WAITING);
-  change_to_state(STATE_MODE);
 }
 
 void loop() {
