@@ -35,6 +35,7 @@ void setup() {
 
   // start in waiting state
   change_to_state(STATE_WAITING);
+  change_to_state(STATE_MODE);
 }
 
 void loop() {
@@ -67,9 +68,10 @@ void loop() {
       beeping_state_loop(button);
       break;
 
+    case STATE_MODE:
+      mode_state_loop(button);
+      break;
   }
-
-
 }
 
 
@@ -87,8 +89,7 @@ void change_to_state(int new_state) {
   } else if (new_state == STATE_BEEPING) {
     current_state = STATE_BEEPING;
   } else if (new_state == STATE_MODE) {
-    Serial.println("FIXME - code up change_to_state(STATE_MODE)");
-    change_to_state(STATE_WAITING);
+    current_state = STATE_MODE;
   }
 }
 
@@ -172,6 +173,57 @@ void running_state_loop_buttons (int button) {
     change_to_state(STATE_RUNNING);
   }
 }
+
+#define MODE_SUBSTATE_BRIGHTNESS 1
+#define MODE_SUBSTATE_VOLUME     2
+
+#define STATE_MODE_TIMEOUT 5000 // 5 secs
+
+void mode_state_loop (int button) {
+
+  static int substate = MODE_SUBSTATE_BRIGHTNESS;
+
+  if (button == BUTTON_RESTART) {
+    change_to_state(STATE_WAITING);
+    return;
+  } else if ( button == BUTTON_MODE ) {
+    if (substate == MODE_SUBSTATE_BRIGHTNESS) {
+      substate = MODE_SUBSTATE_VOLUME;
+    } else if ( substate == MODE_SUBSTATE_VOLUME ) {
+      substate = MODE_SUBSTATE_BRIGHTNESS;
+    }
+    return;
+  }
+
+  if (substate == MODE_SUBSTATE_BRIGHTNESS) {
+    display.display_text( "bri" );
+
+    if ( button == BUTTON_PLUS ) {
+      Serial.println("brighter");
+    } else if ( button == BUTTON_MINUS ) {
+      Serial.println("dimmer");
+    }
+
+  } else if ( substate == MODE_SUBSTATE_VOLUME ) {
+    display.display_text( "vol" );
+
+    if ( button == BUTTON_PLUS ) {
+      Serial.println("louder");
+    } else if ( button == BUTTON_MINUS ) {
+      Serial.println("quieter");
+    }
+
+  }
+
+  // if (millis() - current_state_last_changed > MAX_WAITING_IDLE) {
+  //   // Timeout, shut down.
+  //   shutdown.suspend();
+  //   change_to_state(STATE_WAITING);
+  //   return;
+  // }
+  //
+}
+
 
 void enter_shutdown_state () {
 
