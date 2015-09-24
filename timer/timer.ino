@@ -198,9 +198,9 @@ void mode_state_loop (int button) {
     display.display_text( "bri" );
 
     if ( button == BUTTON_PLUS ) {
-      Serial.println("brighter");
+      display.brighter();
     } else if ( button == BUTTON_MINUS ) {
-      Serial.println("dimmer");
+      display.dimmer();
     }
 
   } else if ( substate == MODE_SUBSTATE_VOLUME ) {
