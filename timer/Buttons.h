@@ -40,6 +40,7 @@ class Buttons
     void setup();
     void reset();
     int get_button_press();
+    unsigned long millis_last_button_pressed();
     void ignore_for(long);
   private:
     void _record_button_press(int);

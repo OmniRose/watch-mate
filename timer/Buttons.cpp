@@ -30,6 +30,10 @@ void Buttons::_record_button_press(int button) {
   Serial.println(_time_button_pressed);
 }
 
+unsigned long Buttons::millis_last_button_pressed() {
+  return _time_button_pressed;
+}
+
 
 int Buttons::get_button_press() {
   int button = _get_current_button();
