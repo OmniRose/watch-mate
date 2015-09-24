@@ -12,9 +12,12 @@ class Speaker
     void beep();
     void louder();
     void quieter();
+    void higher_pitch();
+    void lower_pitch();
     void on();
     void off();
   private:
+    int _frequency;
     int _volume;
 };
 

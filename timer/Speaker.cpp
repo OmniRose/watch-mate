@@ -4,7 +4,18 @@
 
 Speaker::Speaker() {
   _volume = SPEAKER_VOLUME_MAX;
+  _frequency = SPEAKER_BEEP_FREQUENCY_DEFAULT;
 }
+
+
+void Speaker::higher_pitch() {
+  _frequency = min(_frequency + SPEAKER_BEEP_FREQUENCY_CHANGE_INCREMENT, SPEAKER_BEEP_FREQUENCY_MAX);
+}
+
+void Speaker::lower_pitch() {
+  _frequency = max(_frequency - SPEAKER_BEEP_FREQUENCY_CHANGE_INCREMENT, SPEAKER_BEEP_FREQUENCY_MIN);
+}
+
 
 void Speaker::louder() {
   _volume = min(_volume + SPEAKER_VOLUME_CHANGE_INCREMENT, SPEAKER_VOLUME_MAX);
@@ -16,7 +27,7 @@ void Speaker::quieter() {
 
 
 void Speaker::beep() {
-  toneAC(SPEAKER_BEEP_FREQUENCY, _volume, 200, true);
+  toneAC(_frequency, _volume, 200, true);
 }
 
 void Speaker::on() {
@@ -25,7 +36,7 @@ void Speaker::on() {
   int cutoff = PULSER_FLASH_PERIOD * 0.5;
 
   if ( point_in_period > cutoff ) {
-    toneAC(SPEAKER_BEEP_FREQUENCY, _volume, 0, true);
+    toneAC(_frequency, _volume, 0, true);
   } else {
     noToneAC();
   }
