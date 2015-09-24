@@ -25,17 +25,17 @@
 
 
 #define PIN_DISPLAY_DIGIT_1  11       // Display pin 1
-#define PIN_DISPLAY_DIGIT_2  10       // Display pin 2
-#define PIN_DISPLAY_DIGIT_3  9        // Display pin 6
+#define PIN_DISPLAY_DIGIT_2  A3       // Display pin 2
+#define PIN_DISPLAY_DIGIT_3  A4       // Display pin 6
 #define PIN_DISPLAY_DIGIT_4  6        // Display pin 8
 
-#define PIN_DISPLAY_SEGMENT_A A1      //Display pin 14
-#define PIN_DISPLAY_SEGMENT_B A2      //Display pin 16
-#define PIN_DISPLAY_SEGMENT_C 4       //Display pin 13
-#define PIN_DISPLAY_SEGMENT_D 5       //Display pin 3
-#define PIN_DISPLAY_SEGMENT_E A0      //Display pin 5
-#define PIN_DISPLAY_SEGMENT_F 7       //Display pin 11
-#define PIN_DISPLAY_SEGMENT_G 8       //Display pin 15
+#define PIN_DISPLAY_SEGMENT_A A1      // Display pin 14
+#define PIN_DISPLAY_SEGMENT_B A2      // Display pin 16
+#define PIN_DISPLAY_SEGMENT_C 4       // Display pin 13
+#define PIN_DISPLAY_SEGMENT_D 5       // Display pin 3
+#define PIN_DISPLAY_SEGMENT_E A0      // Display pin 5
+#define PIN_DISPLAY_SEGMENT_F 7       // Display pin 11
+#define PIN_DISPLAY_SEGMENT_G 8       // Display pin 15
 #define PIN_DISPLAY_SEGMENT_COLON 12  // Display pin 12
 
 //Display brightness
