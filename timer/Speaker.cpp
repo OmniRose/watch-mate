@@ -27,7 +27,7 @@ void Speaker::quieter() {
 
 
 void Speaker::beep() {
-  toneAC(_frequency, _volume, 200, true);
+  toneAC(_frequency, _volume, SPEAKER_BEEP_DURATION, true);
 }
 
 void Speaker::on() {
