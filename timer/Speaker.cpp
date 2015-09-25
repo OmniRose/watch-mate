@@ -45,20 +45,26 @@ void Speaker::sound_alert() {
 
 void Speaker::sound_alarm() {
 
-  int point_in_period = millis() % 2000;
-  int cutoff = 1000;
+  int point_in_cycle = millis() % (SPEAKER_ALARM_BEEPING_DURATION + SPEAKER_ALARM_WHITE_NOISE_DURATION);
+  bool beeping_on = point_in_cycle <= SPEAKER_ALARM_BEEPING_DURATION;
 
-  bool rapid_pulse_on = millis() % 100 > 50;
+  if ( beeping_on) {
 
-  if ( point_in_period > cutoff) {
+    bool rapid_pulse_on = point_in_cycle % (SPEAKER_ALARM_PULSE_DURATION * 2) > SPEAKER_ALARM_PULSE_DURATION;
+
     if (rapid_pulse_on) {
-      toneAC(SPEAKER_ALARM_FREQUENCY, SPEAKER_ALARM_VOLUME, 0, true);
+      toneAC(SPEAKER_ALARM_BEEP_FREQUENCY, SPEAKER_ALARM_VOLUME, 0, true);
     } else {
       noToneAC();
     }
-
   } else {
-    noToneAC();
+
+    // generate some white noise
+    int white_noise_frequency = random(
+      SPEAKER_ALARM_WHITE_NOISE_FREQUENCY_LOW,
+      SPEAKER_ALARM_WHITE_NOISE_FREQUENCY_HIGH
+    );
+    toneAC(white_noise_frequency, SPEAKER_ALARM_VOLUME, 0, true);
   }
 
 }
