@@ -30,7 +30,7 @@ void Speaker::beep() {
   toneAC(_frequency, _volume, SPEAKER_BEEP_DURATION, true);
 }
 
-void Speaker::on() {
+void Speaker::sound_alert() {
 
   int point_in_period = millis() % PULSER_FLASH_PERIOD;
   int cutoff = PULSER_FLASH_PERIOD * 0.5;

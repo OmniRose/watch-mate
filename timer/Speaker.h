@@ -14,7 +14,7 @@ class Speaker
     void quieter();
     void higher_pitch();
     void lower_pitch();
-    void on();
+    void sound_alert();
     void off();
   private:
     int _frequency;

@@ -155,7 +155,7 @@ void pulsing_state_loop (int button) {
 
 void beeping_state_loop (int button) {
 
-  speaker.on();
+  speaker.sound_alert();
   pulser.flash();
   display.display_time( 0 );
 
