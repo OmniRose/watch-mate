@@ -22,6 +22,7 @@ Shutdown shutdown;
 #define STATE_BEEPING  4
 #define STATE_ALARMING 5
 #define STATE_MODE     6
+#define STATE_DEBUG    7
 
 // unsigned long countdown_ends;
 // unsigned long countdown_duration;
@@ -36,7 +37,8 @@ void setup() {
   buttons.setup();
 
   // start in waiting state
-  change_to_state(STATE_WAITING);
+  // change_to_state(STATE_WAITING);
+  change_to_state(STATE_DEBUG);
 }
 
 void loop() {
@@ -72,6 +74,10 @@ void loop() {
     case STATE_MODE:
       mode_state_loop(button);
       break;
+
+    case STATE_DEBUG:
+      debug_state_loop(button);
+      break;
   }
 }
 
@@ -91,6 +97,9 @@ void change_to_state(int new_state) {
     current_state = STATE_BEEPING;
   } else if (new_state == STATE_MODE) {
     current_state = STATE_MODE;
+  } else if (new_state == STATE_DEBUG) {
+    Serial.println("ENTERING DEBUG MODE!");
+    current_state = STATE_DEBUG;
   }
 }
 
@@ -258,3 +267,9 @@ void enter_shutdown_state () {
     change_to_state(STATE_WAITING);
   }
 }
+
+
+void debug_state_loop(int button) {
+  display.display_text("dbug");
+}
+
