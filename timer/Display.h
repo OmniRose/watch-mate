@@ -9,6 +9,7 @@ class Display
   public:
     Display();
     void display_time(int);
+    void display_number(int);
     void display_text(char*);
     void brighter();
     void dimmer();

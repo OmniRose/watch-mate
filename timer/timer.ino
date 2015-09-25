@@ -270,6 +270,16 @@ void enter_shutdown_state () {
 
 
 void debug_state_loop(int button) {
-  display.display_text("dbug");
+  // display.display_text("dbug");
+
+  // check that the buttons are working
+  int value = analogRead(PIN_BUTTON_LADDER);
+
+  // display value for 0.2 seconds
+  long now = millis();
+  while (millis() < now + 200 ) {
+    display.display_number(value);
+  }
+
 }
 

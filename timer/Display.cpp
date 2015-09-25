@@ -66,6 +66,25 @@ void Display::display_text(char* text) {
   _display_last_painted = micros();
 }
 
+void Display::display_number(int toDisplay) {
+
+  if (_is_pause_required()) return;
+
+  int thousands = toDisplay / 1000 % 10;
+  int hundreds  = toDisplay /  100 % 10;
+  int tens      = toDisplay /   10 % 10;
+  int units     = toDisplay /    1 % 10;
+
+  char numbers_as_letters[] = "0123456789";
+
+  _display_digit(PIN_DISPLAY_DIGIT_1, numbers_as_letters[thousands]);
+  _display_digit(PIN_DISPLAY_DIGIT_2, numbers_as_letters[hundreds]);
+  _display_digit(PIN_DISPLAY_DIGIT_3, numbers_as_letters[tens]);
+  _display_digit(PIN_DISPLAY_DIGIT_4, numbers_as_letters[units]);
+
+  _display_last_painted = micros();
+}
+
 void Display::display_time(int toDisplay) {
 
   if (_is_pause_required()) return;
