@@ -282,8 +282,7 @@ void debug_state_loop(int button) {
   // }
 
   // Sound the alarm until a button is pressed
-  speaker.beep();
-  // speaker.sound_alarm();
+  speaker.sound_alarm();
   if (buttons.get_button_press() != NO_BUTTON ) {
     change_to_state(STATE_WAITING);
   }

@@ -43,6 +43,26 @@ void Speaker::sound_alert() {
 
 }
 
+void Speaker::sound_alarm() {
+
+  int point_in_period = millis() % 2000;
+  int cutoff = 1000;
+
+  bool rapid_pulse_on = millis() % 100 > 50;
+
+  if ( point_in_period > cutoff) {
+    if (rapid_pulse_on) {
+      toneAC(SPEAKER_ALARM_FREQUENCY, SPEAKER_ALARM_VOLUME, 0, true);
+    } else {
+      noToneAC();
+    }
+
+  } else {
+    noToneAC();
+  }
+
+}
+
 
 void Speaker::off() {
   noToneAC();
