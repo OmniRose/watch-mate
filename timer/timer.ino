@@ -228,6 +228,7 @@ void alarming_state_loop (int button) {
 void running_state_loop_buttons (int button) {
   if ( button == BUTTON_RESTART ) {
     countdown.restart();
+    change_to_state(STATE_RUNNING);
   } else if ( button == BUTTON_MODE ) {
     change_to_state(STATE_WAITING);
   } else if ( button == BUTTON_PLUS ) {
