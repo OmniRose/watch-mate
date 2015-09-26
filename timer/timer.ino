@@ -176,9 +176,21 @@ void pulsing_state_loop (int button) {
 
 void beeping_state_loop (int button) {
 
-  speaker.sound_alert();
+  long time_overshot = - countdown.time_remaining();
+  int alert_intensity = 1000; // max value
+
+  if (time_overshot < BEEPING_MODE_EASE_IN_PERIOD) {
+    // Serial.println(time_overshot);
+    alert_intensity = time_overshot * 1000 / BEEPING_MODE_EASE_IN_PERIOD;
+  }
+
+  // sound_alert takes a value beteween 0 and 1000 that represents how hard to
+  // try alerting. Lower is more gently, 1000 is full on.
+
+
+  speaker.sound_alert(alert_intensity);
   pulser.flash();
-  display.display_time( 0 );
+  display.display_time( time_overshot / 1000 );
 
   // Special case the plus button.
   if ( button == BUTTON_PLUS ) {
@@ -190,7 +202,7 @@ void beeping_state_loop (int button) {
   }
 
   // After a certain period enter the alarming state
-  if (countdown.time_remaining() < -BEEPING_MODE_DURATION) {
+  if (time_overshot > BEEPING_MODE_DURATION) {
     return change_to_state(STATE_ALARMING);
   }
 

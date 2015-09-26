@@ -27,16 +27,22 @@ void Speaker::quieter() {
 
 
 void Speaker::beep() {
-  toneAC(_frequency, _volume, SPEAKER_BEEP_DURATION, true);
+  toneAC(_frequency, _volume, SPEAKER_DEMO_BEEP_DURATION, true);
 }
 
-void Speaker::sound_alert() {
+void Speaker::sound_alert(int intensity) {
 
-  int point_in_period = millis() % PULSER_FLASH_PERIOD;
-  int cutoff = PULSER_FLASH_PERIOD * 0.5;
+  // From the intensity work out how loud to be. The "+1" at the end is so that
+  // the values reach their full value at the end. Especially important for the
+  // volume.
+  int alert_volume = map(intensity, 0, 1000, 1, _volume + 1);
+  int alert_period = map(intensity, 0, 1000, SPEAKER_ALERT_PERIOD_INITIAL, SPEAKER_ALERT_PERIOD_FINAL + 1);
+  int alert_length = map(intensity, 0, 1000, SPEAKER_ALERT_ON_INITIAL, SPEAKER_ALERT_ON_FINAL + 1);
 
-  if ( point_in_period > cutoff ) {
-    toneAC(_frequency, _volume, 0, true);
+  int point_in_period = millis() % alert_period;
+
+  if ( point_in_period < alert_length ) {
+    toneAC(_frequency, alert_volume, 0, true);
   } else {
     noToneAC();
   }
