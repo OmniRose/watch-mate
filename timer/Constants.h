@@ -82,5 +82,7 @@
 #define POST_WAKEUP_BUTTON_IGNORE 500 // ms
 #define STATE_MODE_TIMEOUT 5000 // 5 secs in ms
 
+#define BEEPING_MODE_DURATION 180000 // 3 mins
+
 
 #endif

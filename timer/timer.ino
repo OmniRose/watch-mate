@@ -30,6 +30,8 @@ Shutdown shutdown;
 int current_state = STATE_WAITING;
 unsigned long current_state_last_changed;
 
+bool should_sound_alarm = true;
+
 void setup() {
   Serial.begin(9600);
   Serial.println("Starting up!");
@@ -37,8 +39,13 @@ void setup() {
   buttons.setup();
 
   // start in waiting state
-  // change_to_state(STATE_WAITING);
-  change_to_state(STATE_DEBUG);
+  change_to_state(STATE_WAITING);
+
+  // // set up for testing the transition to alarm state
+  // change_to_state(STATE_RUNNING);
+  // countdown.duration(10000); // 10 secs in ms
+  // countdown.restart();
+  // // should now cascade through states straight to alarm.
 }
 
 void loop() {
@@ -55,10 +62,6 @@ void loop() {
 
   switch (current_state) {
 
-    case STATE_WAITING:
-      waiting_state_loop(button);
-      break;
-
     case STATE_RUNNING:
       running_state_loop(button);
       break;
@@ -71,6 +74,10 @@ void loop() {
       beeping_state_loop(button);
       break;
 
+    case STATE_ALARMING:
+      alarming_state_loop(button);
+      break;
+
     case STATE_MODE:
       mode_state_loop(button);
       break;
@@ -78,6 +85,11 @@ void loop() {
     case STATE_DEBUG:
       debug_state_loop(button);
       break;
+
+    default: // essentially state STATE_WAITING
+      waiting_state_loop(button);
+      break;
+
   }
 }
 
@@ -87,6 +99,12 @@ void change_to_state(int new_state) {
   speaker.off();
   current_state_last_changed = millis();
 
+  Serial.print("changing state from '");
+  Serial.print(current_state);
+  Serial.print("' to '");
+  Serial.print(new_state);
+  Serial.println("'.");
+
   if (new_state == STATE_WAITING) {
     current_state = STATE_WAITING;
   } else if (new_state == STATE_RUNNING) {
@@ -95,6 +113,9 @@ void change_to_state(int new_state) {
     current_state = STATE_PULSING;
   } else if (new_state == STATE_BEEPING) {
     current_state = STATE_BEEPING;
+  } else if (new_state == STATE_ALARMING) {
+    should_sound_alarm = true;
+    current_state = STATE_ALARMING;
   } else if (new_state == STATE_MODE) {
     current_state = STATE_MODE;
   } else if (new_state == STATE_DEBUG) {
@@ -166,6 +187,40 @@ void beeping_state_loop (int button) {
     change_to_state(STATE_RUNNING);
   } else {
     running_state_loop_buttons(button);
+  }
+
+  // After a certain period enter the alarming state
+  if (countdown.time_remaining() < -BEEPING_MODE_DURATION) {
+    return change_to_state(STATE_ALARMING);
+  }
+
+}
+
+void alarming_state_loop (int button) {
+
+  static bool first_time = true;
+  if (first_time) Serial.println("in alarm state");
+  first_time = false;
+
+  pulser.flash();
+
+  // When was a button last pressed - this is the last time we know that the
+  // watchkeeper was on the boat.
+  unsigned long time_since_last_seen = millis() - countdown.last_changed();
+  display.display_time( time_since_last_seen / 1000 );
+
+  // Only effect a button press can have is to silence the alarm. Exiting alarm
+  // state is achieved by turning the device off by holding down the power/mode
+  // button.
+  if ( button != NO_BUTTON ) {
+    should_sound_alarm = false;
+  }
+
+  // Make a noise if required.
+  if (should_sound_alarm) {
+    speaker.sound_alarm();
+  } else {
+    speaker.off();
   }
 
 }

@@ -20,10 +20,14 @@ void Countdown::change_duration(long delta) {
   if (new_duration > 0 ) {
     _duration = new_duration;
   }
+
+  _countdown_last_changed = millis();
 }
 
 void Countdown::restart() {
   _countdown_ends = millis() + _duration + COUNTDOWN_SET_EXTRA_TIME;
+
+  _countdown_last_changed = millis();
 }
 
 void Countdown::change_end_time(long delta) {
@@ -33,7 +37,14 @@ void Countdown::change_end_time(long delta) {
   if (new_time_remaining > 0) {
     _countdown_ends = millis() + new_time_remaining;
   }
+
+  _countdown_last_changed = millis();
 }
+
+unsigned long Countdown::last_changed() {
+  return _countdown_last_changed;
+}
+
 
 long Countdown::time_remaining() {
   return _countdown_ends - millis();
